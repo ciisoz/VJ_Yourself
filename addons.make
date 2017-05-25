@@ -1,0 +1,3 @@
+ofxFastFboReader
+ofxOsc
+ofxPlaymodes

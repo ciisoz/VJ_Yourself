@@ -25,9 +25,9 @@ void ofApp::setup(){
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
     
     /// PIPELINE
-    // to do : VideoRate peta ?À
-    // vRate.setup(grabber,grabFPS);
-    vBuffer.setup(grabber, 60,true);
+    vRate.setup(grabber,grabFPS);
+    vBuffer.setup(vRate, 60,true);
+//    vBuffer.setup(grabber, 60,true);
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(33.33f);
 
@@ -87,10 +87,10 @@ void ofApp::keyPressed(int key)
             //        vHeader.setInPct(0.25);
             //        vHeader.setOutPct(0.75);
             vHeader.setPlaying(true);
-            vHeader.setInMs(1500);
+            vHeader.setInMs(500+33.33*30);
             vHeader.setOutMs(500);
             vHeader.setLoopMode(2);
-            vHeader.setSpeed(4.0);
+            vHeader.setSpeed(2.0);
         }
         else
         {

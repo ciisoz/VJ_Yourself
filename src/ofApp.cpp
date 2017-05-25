@@ -36,7 +36,7 @@ void ofApp::setup(){
     vRendererHeader.setup(vHeader);
 
     //to do : si el trec peta
-    sleep(2);
+    //sleep(2);
     
     // PRINT INFOS
     cout << "Buffer : Max Size : " << vBuffer.getMaxSize() << endl;

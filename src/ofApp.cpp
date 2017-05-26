@@ -25,9 +25,9 @@ void ofApp::setup(){
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
     
     /// PIPELINE
-    vRate.setup(grabber,grabFPS);
-    vBuffer.setup(vRate, 60,true);
-//    vBuffer.setup(grabber, 60,true);
+    //vRate.setup(grabber,grabFPS);
+    //vBuffer.setup(vRate, 60,true);
+    vBuffer.setup(grabber, 60,true);
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(33.33f);
 
@@ -58,11 +58,21 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    ofSetColor(255);
+    
     vRendererBuffer.draw(10,10,320,240);
     vRendererHeader.draw(10,260,640,480);
     
     vBuffer.draw();
     vHeader.draw();
+    
+    
+    float actualFPS = ofGetFrameRate();
+    if(actualFPS>=60) ofSetColor(0,255,0);
+    else if(actualFPS>=30) ofSetColor(255,128,0);
+    else ofSetColor(255,0,0);
+    
+    ofDrawBitmapString(actualFPS, ofGetWidth()-25, 25);
 }
 
 //--------------------------------------------------------------
@@ -87,10 +97,10 @@ void ofApp::keyPressed(int key)
             //        vHeader.setInPct(0.25);
             //        vHeader.setOutPct(0.75);
             vHeader.setPlaying(true);
-            vHeader.setInMs(500+33.33*30);
+            vHeader.setInMs(500+33.33333333*30);
             vHeader.setOutMs(500);
-            vHeader.setLoopMode(2);
-            vHeader.setSpeed(2.0);
+            vHeader.setLoopMode(3);
+            vHeader.setSpeed(1.0);
         }
         else
         {

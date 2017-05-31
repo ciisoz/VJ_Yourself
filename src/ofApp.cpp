@@ -1,5 +1,6 @@
 #include "ofApp.h"
 
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 
@@ -27,7 +28,7 @@ void ofApp::setup(){
     /// PIPELINE
     //vRate.setup(grabber,grabFPS);
     //vBuffer.setup(vRate, 60,true);
-    vBuffer.setup(grabber, 60,true);
+    vBuffer.setup(grabber, 120,true);
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(33.33f);
 
@@ -60,7 +61,7 @@ void ofApp::draw()
 {
     ofSetColor(255);
     
-    vRendererBuffer.draw(10,10,320,240);
+    vRendererBuffer.draw(10,10,160,120);
     vRendererHeader.draw(10,260,640,480);
     
     vBuffer.draw();
@@ -73,6 +74,13 @@ void ofApp::draw()
     else ofSetColor(255,0,0);
     
     ofDrawBitmapString(actualFPS, ofGetWidth()-25, 25);
+    
+    ofSetColor(255);
+    ofDrawBitmapString("Frame[0] Timestamp : " + ofToString(vBuffer.getFirstFrameTimestamp().raw()),ofGetWidth()-350,45);
+    ofDrawBitmapString("testTS : " + ofToString(testTS.elapsed()),ofGetWidth()-350,75);
+    ofDrawBitmapString("StopTS : " + ofToString(tsStop.elapsed()),ofGetWidth()-350,105);
+    ofDrawBitmapString("StopTS R: " + ofToString(tsStop.raw()),ofGetWidth()-350,140);
+    ofDrawBitmapString("tdiff : " + ofToString(tdiff),ofGetWidth()-350,175);
 }
 
 //--------------------------------------------------------------
@@ -107,6 +115,19 @@ void ofApp::keyPressed(int key)
             vHeader.setPlaying(false);
         }
     }
+    else if(key=='s')
+    {
+        tdiff=testTS.elapsed();
+    }
+    else if(key=='d')
+    {
+        testTS.update();
+    }
+    else if(key=='f')
+    {
+        testTS=testTs - tdiff;
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -119,7 +140,7 @@ void ofApp::mouseMoved(int x, int y ){
 
     if(ofGetKeyPressed(int('d')))
     {
-        float factor = (float(x)/float(ofGetWidth())) * vBuffer.getMaxSize();
+        float factor = (float(ofGetWidth()-x)/float(ofGetWidth())) * vBuffer.getMaxSize();
         vHeader.setDelayMs(33.33f * factor);
         cout << "Setting delay at " << ofToString(33.33f * factor) << endl;
     }

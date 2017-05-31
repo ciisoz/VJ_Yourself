@@ -43,5 +43,7 @@ class ofApp : public ofBaseApp{
 
 
     /// GENERAL
-    
+    Poco::Timestamp             testTS;
+    Poco::Timestamp             tsStop;
+    Poco::Timestamp::TimeDiff   tdiff;
 };

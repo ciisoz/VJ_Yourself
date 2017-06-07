@@ -36,6 +36,7 @@
 		8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81967292BFC87A0144BD32C6 /* ofxOscSender.cpp */; };
 		936BA6B4E5263F7CA369004F /* VideoFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F3B28C96120E83769E2E43 /* VideoFrame.cpp */; };
 		98A7C5CF272531314ECBEED1 /* VideoMixerGPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50E6AFCFA1D91F2798CDE376 /* VideoMixerGPU.cpp */; };
+		9F33F2421EE80E640022C4C0 /* phasorClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F33F2401EE80E640022C4C0 /* phasorClass.cpp */; };
 		A379A52ED16E9B1FF84E0252 /* AudioHeaderSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7407F28B692E6DD1BD39372 /* AudioHeaderSample.cpp */; };
 		A8DA273CA0DD54ED87BA4029 /* VideoFeedbackPixelsGPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECB7283484F32D1098DAAF46 /* VideoFeedbackPixelsGPU.cpp */; };
 		A927ADF845D4C1CD10987F55 /* VideoSink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118E3F678A0E7344AC2E45E6 /* VideoSink.cpp */; };
@@ -147,6 +148,8 @@
 		9BF3AA0D4FAA89D0F8A0E545 /* OscReceivedElements.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscReceivedElements.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscReceivedElements.cpp; sourceTree = SOURCE_ROOT; };
 		9E24E95183B1345717589EA4 /* BaseEnvelope.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = BaseEnvelope.h; path = ../../../addons/ofxPlaymodes/src/frames/envelopes/BaseEnvelope.h; sourceTree = SOURCE_ROOT; };
 		9F271E87F338AB1028EA9ACA /* AudioBuffer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = AudioBuffer.h; path = ../../../addons/ofxPlaymodes/src/buffers/AudioBuffer.h; sourceTree = SOURCE_ROOT; };
+		9F33F2401EE80E640022C4C0 /* phasorClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = phasorClass.cpp; path = ../../../addons/ofxPlaymodes/src/AVHeaders/phasorClass.cpp; sourceTree = "<group>"; };
+		9F33F2411EE80E640022C4C0 /* phasorClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = phasorClass.h; path = ../../../addons/ofxPlaymodes/src/AVHeaders/phasorClass.h; sourceTree = "<group>"; };
 		9F7986DC4EB05E75FCE2C777 /* ofxOscSender.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscSender.h; path = ../../../addons/ofxOsc/src/ofxOscSender.h; sourceTree = SOURCE_ROOT; };
 		A2AAA8CA403479E6FCDF920E /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		A9137ED6D3CB2B34FADCA7E6 /* VideoFeedbackPixelsGPU.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = VideoFeedbackPixelsGPU.h; path = ../../../addons/ofxPlaymodes/src/filters/VideoFeedbackPixelsGPU.h; sourceTree = SOURCE_ROOT; };
@@ -411,6 +414,8 @@
 		C2F36CC6036E27471A7A7E2E /* AVHeaders */ = {
 			isa = PBXGroup;
 			children = (
+				9F33F2401EE80E640022C4C0 /* phasorClass.cpp */,
+				9F33F2411EE80E640022C4C0 /* phasorClass.h */,
 				E7407F28B692E6DD1BD39372 /* AudioHeaderSample.cpp */,
 				8FA4BF175E8F1A4352A508A6 /* AudioHeaderSample.h */,
 				5351B6F33055949B44ABEDA3 /* PmPdVideoHeader.cpp */,
@@ -675,6 +680,7 @@
 				53190A79A30098D5561A23A8 /* ofxFastFboReader.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
+				9F33F2421EE80E640022C4C0 /* phasorClass.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,

@@ -46,6 +46,8 @@ void ofApp::setup(){
     cout << "Buffer : Total Frames : " << vBuffer.getTotalFrames() << endl;
     
     ofBackground(32);
+    
+    soundStream.setup(this, 0, 2, 44100, 512, 4);
 }
 
 //--------------------------------------------------------------
@@ -82,6 +84,12 @@ void ofApp::draw()
     //    ofDrawBitmapString("StopTS : " + ofToString(tsStop.elapsed()),ofGetWidth()-350,105);
     //    ofDrawBitmapString("StopTS R: " + ofToString(tsStop.raw()),ofGetWidth()-350,140);
 }
+
+//-----------------------------------
+void ofApp::audioIn(float * input, int bufferSize, int nChannels){
+    vHeader.audioRateTrigger(bufferSize);
+}
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)

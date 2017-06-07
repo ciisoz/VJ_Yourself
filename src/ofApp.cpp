@@ -76,11 +76,11 @@ void ofApp::draw()
     ofDrawBitmapString(actualFPS, ofGetWidth()-25, 25);
     
     ofSetColor(255);
-    ofDrawBitmapString("Frame[0] Timestamp : " + ofToString(vBuffer.getFirstFrameTimestamp().raw()),ofGetWidth()-350,45);
+    ofDrawBitmapString("Frame[0] Timestamp : " + ofToString(vBuffer.getFirstFrameTimestamp().raw()),ofGetWidth()-350,50);
     ofDrawBitmapString("testTS : " + ofToString(testTS.elapsed()),ofGetWidth()-350,75);
-    ofDrawBitmapString("StopTS : " + ofToString(tsStop.elapsed()),ofGetWidth()-350,105);
-    ofDrawBitmapString("StopTS R: " + ofToString(tsStop.raw()),ofGetWidth()-350,140);
-    ofDrawBitmapString("tdiff : " + ofToString(tdiff),ofGetWidth()-350,175);
+    ofDrawBitmapString("tdiff : " + ofToString(tdiff),ofGetWidth()-350,100);
+    //    ofDrawBitmapString("StopTS : " + ofToString(tsStop.elapsed()),ofGetWidth()-350,105);
+    //    ofDrawBitmapString("StopTS R: " + ofToString(tsStop.raw()),ofGetWidth()-350,140);
 }
 
 //--------------------------------------------------------------
@@ -118,14 +118,18 @@ void ofApp::keyPressed(int key)
     else if(key=='s')
     {
         tdiff=testTS.elapsed();
+//        tsStop.update();
     }
     else if(key=='d')
     {
         testTS.update();
+        testTS -= tdiff;
     }
     else if(key=='f')
     {
-        testTS=testTs - tdiff;
+        testTS.update();
+        //testTS=testTS + tsStop.elapsed();
+//        timeval tv;
     }
     
 }

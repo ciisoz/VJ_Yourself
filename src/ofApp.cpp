@@ -1,8 +1,12 @@
 #include "ofApp.h"
 
+#include "parametersControl.h"
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+
+    parametersControl::getInstance().setup();
 
     isRecording=true;
     
@@ -135,9 +139,8 @@ void ofApp::keyPressed(int key)
     }
     else if(key=='f')
     {
-        testTS.update();
-        //testTS=testTS + tsStop.elapsed();
-//        timeval tv;
+        bool b=true;
+        vHeader.getPhasors()[0]->resetPhasor(b);
     }
     
 }

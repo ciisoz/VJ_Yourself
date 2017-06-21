@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxPlaymodes.h"
+#include "phasorClass.h"
+#include "baseOscillator.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -24,7 +27,7 @@ class ofApp : public ofBaseApp{
     void gotMessage(ofMessage msg);
     
     void audioIn(float * input, int bufferSize, int nChannels);
-    ofEvent<int> audioRateTrigger;
+    ofEvent<int> audioRateTriggerEvent;
 
     /// GRABBER
     float						grabFPS;
@@ -51,4 +54,29 @@ class ofApp : public ofBaseApp{
     Poco::Timestamp::TimeDiff   tdiff;
     
     ofSoundStream soundStream;
+    
+    /// GUI?
+    ofParameterGroup    parametersHeader;
+    ofParameter<float>  guiHeaderDelay;
+    ofParameter<float>  guiHeaderIn;
+    ofParameter<float>  guiHeaderOut;
+    ofParameter<bool>   guiHeaderIsPlaying;
+    
+    // LISTENERS FUNCTIONS
+    void                changedHeaderIsPlaying(bool &b);
+    void                changedHeaderIn(float &f);
+    void                changedHeaderOut(float &f);
+    void                changedHeaderDelay(float &f);
+    
+    //--------- PHASORS
+    //vector<phasorClass*> phasors;
+    vector<phasorClass*> phasors;
+    vector<baseOscillator*>  oscillators;
+
+    // phasors
+//    vector<phasorClass*> getPhasors(){return phasors;};
+    void    audioRateTrigger(int bufferSize);
+
+
+
 };

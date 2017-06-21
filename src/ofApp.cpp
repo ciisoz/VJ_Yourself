@@ -2,12 +2,31 @@
 
 #include "parametersControl.h"
 
+int NUM_PHASORS = 2;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
 
     parametersControl::getInstance().setup();
+    bpmControl::getInstance().setup();
+    
+//    phasors.push_back(new phasorClass());
+//    phasors[0]->getParameterGroup()->getFloat("BPM") = 60;
+//    phasors[0]->getParameterGroup()->getBool("Bounce") = false;
+//    phasors[0]->getParameterGroup()->getBool("Loop") = true;
 
+    for(int i=0;i<NUM_PHASORS;i++)
+    {
+        phasorClass* p = new phasorClass();
+        phasors.push_back(p);
+        phasors[i]->getParameterGroup()->getFloat("BPM") = 60.0;
+        phasors[i]->getParameterGroup()->getFloat("Bounce") = false;
+        
+        baseOscillator* o = new baseOscillator();
+        oscillators.push_back(o);
+    }
+
+    
     isRecording=true;
     
     /// GRABBER
@@ -52,14 +71,71 @@ void ofApp::setup(){
     ofBackground(32);
     
     soundStream.setup(this, 0, 2, 44100, 512, 4);
+    
+    /// GUI
+    //////////
+    parametersHeader.setName("Header");
+    parametersHeader.add(guiHeaderIsPlaying.set("Loop?",false));
+    parametersHeader.add(guiHeaderDelay.set("Delay", 0.0, 0.0, 1.0));
+    parametersHeader.add(guiHeaderIn.set("In", 1.0, 0.0, 1.0));
+    parametersHeader.add(guiHeaderOut.set("Out", 0.0, 0.0, 1.0));
+    
+    parametersControl::getInstance().createGuiFromParams(&parametersHeader, ofColor::orange);
+
+        
+    // LISTENERS FUNCTIONS
+    guiHeaderIsPlaying.addListener(this, &ofApp::changedHeaderIsPlaying);
+    guiHeaderDelay.addListener(this,&ofApp::changedHeaderDelay);
+    guiHeaderIn.addListener(this,&ofApp::changedHeaderIn);
+    guiHeaderOut.addListener(this,&ofApp::changedHeaderOut);
+
 }
+//--------------------------------------------------------------
+void ofApp::changedHeaderIsPlaying(bool &b)
+{
+    cout << "Header Is Playing Changed to " << b <<endl;
+    vHeader.setPlaying(b);
+}
+
+//--------------------------------------------------------------
+void ofApp::changedHeaderIn(float &f)
+{
+    int buffSize = vBuffer.getMaxSize();
+    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
+    //    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
+    vHeader.setInMs(ofMap(guiHeaderIn,0.0,1.0,0.0,buffSize*oneFrameMs));
+    
+}
+//--------------------------------------------------------------
+void ofApp::changedHeaderOut(float &f)
+{
+    int buffSize = vBuffer.getMaxSize();
+    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
+//    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
+    vHeader.setOutMs(ofMap(guiHeaderOut,0.0,1.0,0.0,buffSize*oneFrameMs));
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::changedHeaderDelay(float &f)
+{
+    int buffSize = vBuffer.getMaxSize();
+    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
+    //    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
+    vHeader.setDelayMs(ofMap(guiHeaderDelay,0.0,1.0,0.0,buffSize*oneFrameMs));
+}
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
     if(isRecording) grabber.update();
  
-    
+//    phasor->getParameterGroup()->getFloat("Phasor Monitor");
+    for(int i=0;i<NUM_PHASORS;i++)
+    {
+        phasors[i]->getPhasor();
+    }
 }
 
 //--------------------------------------------------------------
@@ -90,8 +166,16 @@ void ofApp::draw()
 }
 
 //-----------------------------------
-void ofApp::audioIn(float * input, int bufferSize, int nChannels){
-    vHeader.audioRateTrigger(bufferSize);
+void ofApp::audioIn(float * input, int bufferSize, int nChannels)
+{
+//    audioRateTrigger(bufferSize);
+    
+    for(int i=0;i<NUM_PHASORS;i++)
+    {
+        phasors[i]->audioIn(bufferSize);
+    }
+    
+     bpmControl::getInstance().audioIn(input, bufferSize, nChannels);
 }
 
 
@@ -116,11 +200,11 @@ void ofApp::keyPressed(int key)
         {
             //        vHeader.setInPct(0.25);
             //        vHeader.setOutPct(0.75);
-            vHeader.setPlaying(true);
-            vHeader.setInMs(500+33.33333333*30);
-            vHeader.setOutMs(500);
-            vHeader.setLoopMode(3);
-            vHeader.setSpeed(1.0);
+//            vHeader.setPlaying(true);
+//            vHeader.setInMs(500+33.33333333*30);
+//            vHeader.setOutMs(500);
+//            vHeader.setLoopMode(3);
+//            vHeader.setSpeed(1.0);
         }
         else
         {
@@ -140,7 +224,7 @@ void ofApp::keyPressed(int key)
     else if(key=='f')
     {
         bool b=true;
-        vHeader.getPhasors()[0]->resetPhasor(b);
+        //vHeader.getPhasors()[0]->resetPhasor(b);
     }
     
 }
@@ -199,4 +283,13 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+//------------------------------------------------------
+void ofApp::audioRateTrigger(int bufferSize)
+{
+//    for(int i = phasors.size()-1 ; i >= 0 ; i--){
+//        phasors[i]->audioIn(bufferSize);
+//    }
+    
+    
 }

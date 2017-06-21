@@ -1,0 +1,36 @@
+<PRESET>
+	<DYNAMIC_NODES>
+		<phasor_0>0_0</phasor_0>
+		<oscillator_0>310_0</oscillator_0>
+		<waveScope>0</waveScope>
+		<colorApplier>-1_-1</colorApplier>
+	</DYNAMIC_NODES>
+	<phasor_0>
+		<BPM>0.0600601</BPM>
+		<Beats_Div>0</Beats_Div>
+		<Beats_Mult>0</Beats_Mult>
+		<Quantization>1</Quantization>
+		<Initial_Phase>0</Initial_Phase>
+		<Min_Value>0</Min_Value>
+		<Max_Value>1</Max_Value>
+		<Reset_Phase>0</Reset_Phase>
+		<Loop>1</Loop>
+		<Bounce>1</Bounce>
+		<Offline_Mode>0</Offline_Mode>
+		<Phasor_Monitor>0</Phasor_Monitor>
+	</phasor_0>
+	<oscillator_0>
+		<Phasor_In>0.595918</Phasor_In>
+		<Phase_Offset>0</Phase_Offset>
+		<Random_Addition>0.5</Random_Addition>
+		<Scale>0.5</Scale>
+		<Offset>0.5</Offset>
+		<Pow>0.5125</Pow>
+		<Quantization>1</Quantization>
+		<Fader>1</Fader>
+		<Wave_Select>2</Wave_Select>
+		<Square_PWM>0.5</Square_PWM>
+		<Output>0.808163</Output>
+	</oscillator_0>
+	<CONNECTIONS/>
+</PRESET>

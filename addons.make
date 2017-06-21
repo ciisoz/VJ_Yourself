@@ -1,3 +1,7 @@
+ofxAubio
+ofxDatGui_PM
 ofxFastFboReader
+ofxMidi
 ofxOsc
 ofxPlaymodes
+ofxTweenzor

@@ -4,7 +4,7 @@
 #include "ofxPlaymodes.h"
 #include "phasorClass.h"
 #include "baseOscillator.h"
-
+#include "mapper.h"
 
 class ofApp : public ofBaseApp{
 
@@ -72,6 +72,7 @@ class ofApp : public ofBaseApp{
     //vector<phasorClass*> phasors;
     vector<phasorClass*> phasors;
     vector<baseOscillator*>  oscillators;
+    vector<mapper*> mappers;
 
     // phasors
 //    vector<phasorClass*> getPhasors(){return phasors;};

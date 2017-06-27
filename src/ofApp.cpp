@@ -7,25 +7,24 @@ int NUM_PHASORS = 2;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    ofSetEscapeQuitsApp(false);
+    
     parametersControl::getInstance().setup();
     bpmControl::getInstance().setup();
     
-//    phasors.push_back(new phasorClass());
-//    phasors[0]->getParameterGroup()->getFloat("BPM") = 60;
-//    phasors[0]->getParameterGroup()->getBool("Bounce") = false;
-//    phasors[0]->getParameterGroup()->getBool("Loop") = true;
-
     for(int i=0;i<NUM_PHASORS;i++)
     {
-        phasorClass* p = new phasorClass();
+        phasorClass* p = new phasorClass(i,ofPoint(660+300*i,0));
         phasors.push_back(p);
         phasors[i]->getParameterGroup()->getFloat("BPM") = 60.0;
         phasors[i]->getParameterGroup()->getFloat("Bounce") = false;
         
-        baseOscillator* o = new baseOscillator();
+        baseOscillator* o = new baseOscillator(i,true,ofPoint(660+300*i,300));
         oscillators.push_back(o);
+        
+        mapper* m = new mapper(i,ofPoint(660+300*i,600));
+        mappers.push_back(m);
     }
-
     
     isRecording=true;
     
@@ -49,8 +48,6 @@ void ofApp::setup(){
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
     
     /// PIPELINE
-    //vRate.setup(grabber,grabFPS);
-    //vBuffer.setup(vRate, 60,true);
     vBuffer.setup(grabber, 120,true);
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(33.33f);
@@ -59,7 +56,7 @@ void ofApp::setup(){
     vRendererBuffer.setup(vBuffer);
     vRendererHeader.setup(vHeader);
 
-    //to do : si el trec peta
+    //to do : si el trec peta? o petava ...
     //sleep(2);
     
     // PRINT INFOS
@@ -75,7 +72,7 @@ void ofApp::setup(){
     /// GUI
     //////////
     parametersHeader.setName("Header");
-    parametersHeader.add(guiHeaderIsPlaying.set("Loop?",false));
+    parametersHeader.add(guiHeaderIsPlaying.set("Loop",false));
     parametersHeader.add(guiHeaderDelay.set("Delay", 0.0, 0.0, 1.0));
     parametersHeader.add(guiHeaderIn.set("In", 1.0, 0.0, 1.0));
     parametersHeader.add(guiHeaderOut.set("Out", 0.0, 0.0, 1.0));
@@ -94,7 +91,7 @@ void ofApp::setup(){
 void ofApp::changedHeaderIsPlaying(bool &b)
 {
     cout << "Header Is Playing Changed to " << b <<endl;
-    vHeader.setPlaying(b);
+//    vHeader.setPlaying(b);
 }
 
 //--------------------------------------------------------------
@@ -112,7 +109,7 @@ void ofApp::changedHeaderOut(float &f)
     int buffSize = vBuffer.getMaxSize();
     float oneFrameMs = (1.0 / grabFPS) * 1000.0;
 //    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
-    vHeader.setOutMs(ofMap(guiHeaderOut,0.0,1.0,0.0,buffSize*oneFrameMs));
+   vHeader.setOutMs(ofMap(guiHeaderOut,0.0,1.0,0.0,buffSize*oneFrameMs));
     
 }
 
@@ -127,8 +124,8 @@ void ofApp::changedHeaderDelay(float &f)
 
 
 //--------------------------------------------------------------
-void ofApp::update(){
-
+void ofApp::update()
+{
     if(isRecording) grabber.update();
  
 //    phasor->getParameterGroup()->getFloat("Phasor Monitor");
@@ -144,7 +141,7 @@ void ofApp::draw()
     ofSetColor(255);
     
     vRendererBuffer.draw(10,10,160,120);
-    vRendererHeader.draw(10,260,640,480);
+    vRendererHeader.draw(10,140,640,480);
     
     vBuffer.draw();
     vHeader.draw();
@@ -196,20 +193,6 @@ void ofApp::keyPressed(int key)
     }
     else if(key=='l')
     {
-        if(!vHeader.isPlaying())
-        {
-            //        vHeader.setInPct(0.25);
-            //        vHeader.setOutPct(0.75);
-//            vHeader.setPlaying(true);
-//            vHeader.setInMs(500+33.33333333*30);
-//            vHeader.setOutMs(500);
-//            vHeader.setLoopMode(3);
-//            vHeader.setSpeed(1.0);
-        }
-        else
-        {
-            vHeader.setPlaying(false);
-        }
     }
     else if(key=='s')
     {

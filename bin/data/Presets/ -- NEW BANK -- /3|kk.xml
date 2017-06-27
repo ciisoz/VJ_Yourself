@@ -1,9 +1,9 @@
 <PRESET>
 	<DYNAMIC_NODES>
 		<phasor_0>0_0</phasor_0>
-		<phasor_1>72_320</phasor_1>
-		<oscillator_0>681_314</oscillator_0>
-		<oscillator_1>460_0</oscillator_1>
+		<phasor_1>930_0</phasor_1>
+		<oscillator_0>310_0</oscillator_0>
+		<oscillator_1>1240_0</oscillator_1>
 		<waveScope>0</waveScope>
 		<colorApplier>-1_-1</colorApplier>
 	</DYNAMIC_NODES>
@@ -19,10 +19,22 @@
 		<Loop>1</Loop>
 		<Bounce>0</Bounce>
 		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0.946032</Phasor_Monitor>
+		<Phasor_Monitor>0.189841</Phasor_Monitor>
+		<BPM>0.964704</BPM>
+		<Beats_Div>0</Beats_Div>
+		<Beats_Mult>0</Beats_Mult>
+		<Quantization>1</Quantization>
+		<Initial_Phase>0</Initial_Phase>
+		<Min_Value>0</Min_Value>
+		<Max_Value>1</Max_Value>
+		<Reset_Phase>0</Reset_Phase>
+		<Loop>1</Loop>
+		<Bounce>0</Bounce>
+		<Offline_Mode>0</Offline_Mode>
+		<Phasor_Monitor>0.789709</Phasor_Monitor>
 	</phasor_0>
 	<oscillator_0>
-		<Phasor_In>0.946032</Phasor_In>
+		<Phasor_In>0.189841</Phasor_In>
 		<Phase_Offset>0</Phase_Offset>
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
@@ -32,7 +44,7 @@
 		<Fader>1</Fader>
 		<Wave_Select>0</Wave_Select>
 		<Square_PWM>0.5</Square_PWM>
-		<Output>0.333684</Output>
+		<Output>0.964704</Output>
 		<Phasor_In>0</Phasor_In>
 		<Phase_Offset>0</Phase_Offset>
 		<Random_Addition>0.5</Random_Addition>
@@ -46,12 +58,12 @@
 		<Output>0</Output>
 	</oscillator_0>
 	<mapper_0>
-		<Input>0.946032</Input>
+		<Input>0.964704</Input>
 		<MinInput>0</MinInput>
 		<MaxInput>1</MaxInput>
 		<MinOutput>0</MinOutput>
 		<MaxOutput>1</MaxOutput>
-		<Output>0.946032</Output>
+		<Output>0.964704</Output>
 		<Input>0</Input>
 		<MinInput>0</MinInput>
 		<MaxInput>1</MaxInput>
@@ -59,20 +71,7 @@
 		<MaxOutput>1</MaxOutput>
 		<Output>0</Output>
 	</mapper_0>
-	<phasor_1>
-		<BPM>0.0600601</BPM>
-		<Beats_Div>0</Beats_Div>
-		<Beats_Mult>0</Beats_Mult>
-		<Quantization>1</Quantization>
-		<Initial_Phase>0</Initial_Phase>
-		<Min_Value>0</Min_Value>
-		<Max_Value>1</Max_Value>
-		<Reset_Phase>0</Reset_Phase>
-		<Loop>1</Loop>
-		<Bounce>0</Bounce>
-		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0.946032</Phasor_Monitor>
-	</phasor_1>
+	<phasor_0/>
 	<oscillator_0/>
 	<mapper_0/>
 	<Header>
@@ -83,10 +82,13 @@
 	</Header>
 	<CONNECTIONS>
 		<connection_0_source>phasor_0-|-Phasor_Monitor</connection_0_source>
-		<connection_0_sink>mapper_0-|-Input</connection_0_sink>
+		<connection_0_sink>oscillator_0-|-Phasor_In</connection_0_sink>
 		<connection_0_minmax>0-|-1</connection_0_minmax>
-		<connection_1_source>mapper_0-|-Output</connection_1_source>
-		<connection_1_sink>oscillator_0-|-Phasor_In</connection_1_sink>
+		<connection_1_source>oscillator_0-|-Output</connection_1_source>
+		<connection_1_sink>mapper_0-|-Input</connection_1_sink>
 		<connection_1_minmax>0-|-1</connection_1_minmax>
+		<connection_2_source>mapper_0-|-Output</connection_2_source>
+		<connection_2_sink>phasor_0-|-BPM</connection_2_sink>
+		<connection_2_minmax>0-|-1</connection_2_minmax>
 	</CONNECTIONS>
 </PRESET>

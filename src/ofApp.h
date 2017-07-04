@@ -5,6 +5,7 @@
 #include "phasorClass.h"
 #include "baseOscillator.h"
 #include "mapper.h"
+#include "oscillatorBank.h"
 
 class ofApp : public ofBaseApp{
 
@@ -45,8 +46,8 @@ class ofApp : public ofBaseApp{
     ofxPm::VideoHeader          vHeader;
 
     /// RENDERER
-    ofxPm::BasicVideoRenderer		vRendererGrabber,vRendererBuffer,vRendererHeader;
-
+    ofxPm::BasicVideoRenderer	vRendererGrabber,vRendererBuffer,vRendererHeader;
+    ofxPm::MultixRenderer       vMultixRenderer;
 
     /// GENERAL
     Poco::Timestamp             testTS;
@@ -56,27 +57,33 @@ class ofApp : public ofBaseApp{
     ofSoundStream soundStream;
     
     /// GUI?
-    ofParameterGroup    parametersHeader;
+    ofParameterGroup*    parametersHeader;
     ofParameter<float>  guiHeaderDelay;
     ofParameter<float>  guiHeaderIn;
     ofParameter<float>  guiHeaderOut;
     ofParameter<bool>   guiHeaderIsPlaying;
+    ofParameter<vector<float>> guiMultixValues;
     
     // LISTENERS FUNCTIONS
     void                changedHeaderIsPlaying(bool &b);
     void                changedHeaderIn(float &f);
     void                changedHeaderOut(float &f);
     void                changedHeaderDelay(float &f);
+    void                changedMultixValues(vector<float> &f);
+    
     
     //--------- PHASORS
     //vector<phasorClass*> phasors;
     vector<phasorClass*> phasors;
     vector<baseOscillator*>  oscillators;
+    vector<oscillatorBank*>  oscillatorBanks;
     vector<mapper*> mappers;
 
     // phasors
 //    vector<phasorClass*> getPhasors(){return phasors;};
     void    audioRateTrigger(int bufferSize);
+    
+    bool drawFullScreen;
 
 
 

@@ -3,11 +3,17 @@
 #include "parametersControl.h"
 
 int NUM_PHASORS = 2;
-int numCopies = 320;
+int numCopies = 60;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
     drawFullScreen = false;
+#ifdef PM_USE_PS3EYE
+    PS3_autoWB=false;
+    PS3_autoGain=false;
+    PS3_exposure=120;
+    PS3_hue = 0;
+#endif
     
     ofSetEscapeQuitsApp(false);
 
@@ -27,18 +33,18 @@ void ofApp::setup(){
         baseOscillator* o = new baseOscillator(i,true,ofPoint(660+300*i,300));
         oscillators.push_back(o);
         
-        mapper* m = new mapper(i,ofPoint(660+300*i,600));
-        mappers.push_back(m);
         
         //int nOscillators, bool gui, int _bankId, ofPoint pos) : baseIndexer(nOscillators
-        oscillatorBank* ob = new oscillatorBank(numCopies,true,0,ofPoint(990+300*i,300));
+        oscillatorBank* ob = new oscillatorBank(numCopies,true,i,ofPoint(660+300*i,600));
         oscillatorBanks.push_back(ob);
+
+        mapper* m = new mapper(i,ofPoint(960+300,200*i));
+        mappers.push_back(m);
     }
     
     
     /// GRABBER
     /////////////
-    isRecording=true;
     vector<ofVideoDevice> devices = grabber.listDevices();
     
     for(int i = 0; i < devices.size(); i++){
@@ -49,7 +55,7 @@ void ofApp::setup(){
         }
     }
 
-    grabFPS = 30;
+    grabFPS = 60;
     grabberResolution = ofVec2f(640,480);
     grabberAspectRatio = grabberResolution.x / grabberResolution.y;
     vector<ofVideoDevice> vL = grabber.listDevices();
@@ -61,24 +67,28 @@ void ofApp::setup(){
     //grabber.ofBaseVideoGrabber::setDesiredFrameRate(grabFPS);
     grabber.setDeviceID(1);
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
-    /// PIPELINE
-    vBuffer.setup(grabber, 600,true);
-    vHeader.setup(vBuffer);
-    vHeader.setDelayMs(0.0f);
 
+    ///////////////
+    /// PIPELINE
+    ///////////////
+    
+    vBuffer.setup(grabber, 240,true);
     vRendererGrabber.setup(grabber);
     vRendererBuffer.setup(vBuffer);
-    vRendererHeader.setup(vHeader);
 
+#ifdef PM_USE_HEADER_RENDERER
+    vHeader.setup(vBuffer);
+    vHeader.setDelayMs(0.0f);
+    vRendererHeader.setup(vHeader);
+#endif
+    
+#ifdef PM_USE_MULTIX_RENDERER
     vMultixRenderer.setup(vBuffer,numCopies);
-    vMultixRenderer.setDelayOffset(0.04f);
+    vMultixRenderer.setDelayOffset(0.002f);
     vMultixRenderer.setMinmaxBlend(1);
     vMultixRenderer.setTint(ofColor(255,255,255,254));
+#endif
 
-    
-    //to do : si el trec peta? o petava ...
-    //sleep(2);
-    
     // PRINT INFOS
     cout << "Buffer : Max Size : " << vBuffer.getMaxSize() << endl;
     cout << "Buffer : FPS : " << vBuffer.getFps() << endl;
@@ -91,63 +101,86 @@ void ofApp::setup(){
     
     /// GUI
     //////////
-    parametersHeader = new ofParameterGroup();
-    parametersHeader->setName("PLAYMODES");
-    parametersHeader->add(guiHeaderIsPlaying.set("Loop",false));
-    parametersHeader->add(guiHeaderDelay.set("Header", 0.0, 0.0, 1.0));
-    parametersHeader->add(guiHeaderIn.set("In", 1.0, 0.0, 1.0));
-    parametersHeader->add(guiHeaderOut.set("Out", 0.0, 0.0, 1.0));
-    parametersHeader->add(guiMultixValues.set("Multix Values",guiMultixValues));
+    parametersPlaymodes = new ofParameterGroup();
     
-    parametersControl::getInstance().createGuiFromParams(parametersHeader, ofColor::orange);
+    parametersPlaymodes->setName("PLAYMODES VJYOURSELF");
+    parametersPlaymodes->add(guiBufferIsRecording.set("Buffer Recording",true));
+    parametersPlaymodes->add(guiHeaderDelay.set("Header", 0.0, 0.0, 1.0));
+#ifdef PM_USE_MULTIX_RENDERER
+    parametersPlaymodes->add(guiMultixOffset.set("Multix Offset",0.04,0.0,10.0));
+    parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend Min/Max",true));
+    parametersPlaymodes->add(guiMultixValues.set("Multix Values[]",guiMultixValues));
+#endif
+    
+    parametersControl::getInstance().createGuiFromParams(parametersPlaymodes, ofColor::orange, ofPoint(350,500));
 
-        
+    parametersControl::getInstance().setSliderPrecision(1,"Multix Offset", 4);
     // LISTENERS FUNCTIONS
-    guiHeaderIsPlaying.addListener(this, &ofApp::changedHeaderIsPlaying);
+    guiBufferIsRecording.addListener(this, &ofApp::changedBufferIsRecording);
+
+#ifdef PM_USE_HEADER_RENDERER
     guiHeaderDelay.addListener(this,&ofApp::changedHeaderDelay);
-    guiHeaderIn.addListener(this,&ofApp::changedHeaderIn);
-    guiHeaderOut.addListener(this,&ofApp::changedHeaderOut);
+#endif
+    
+#ifdef PM_USE_MULTIX_RENDERER
     guiMultixValues.addListener(this, &ofApp::changedMultixValues);
+    guiMultixOffset.addListener(this, &ofApp::changedMultixOffset);
+    guiMultixMinMaxBlend.addListener(this, &ofApp::changedMinMaxBlend);
+#endif
     
 }
 //--------------------------------------------------------------
-void ofApp::changedHeaderIsPlaying(bool &b)
+void ofApp::changedBufferIsRecording(bool &b)
 {
-    cout << "Header Is Playing Changed to " << b <<endl;
-//    vHeader.setPlaying(b);
+    cout << "Buffer Recording set to : " << b <<endl;
+
+    if(b)
+    {
+        vBuffer.resume();
+    }
+    else
+    {
+        vBuffer.stop();
+    }
+
 }
 
-
+#ifdef PM_USE_MULTIX_RENDERER
 //--------------------------------------------------------------
 void ofApp::changedMultixValues(vector<float> &vf)
 {
     //cout << "*" << endl;
-//    for(int i=0;i<f.size();i++)
-//    {
-//        cout << f[i] << "," << endl;
-//    }
+    //    for(int i=0;i<f.size();i++)
+    //    {
+    //        cout << f[i] << "," << endl;
+    //    }
     
     vMultixRenderer.updateValues(vf);
 }
 //--------------------------------------------------------------
-void ofApp::changedHeaderIn(float &f)
+void ofApp::changedMultixOffset(float &f)
 {
-    int buffSize = vBuffer.getMaxSize();
-    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
-    //    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
-    vHeader.setInMs(ofMap(guiHeaderIn,0.0,1.0,0.0,buffSize*oneFrameMs));
-    
+    vMultixRenderer.setDelayOffset(f);
 }
 //--------------------------------------------------------------
-void ofApp::changedHeaderOut(float &f)
+void ofApp::changedMinMaxBlend(bool &b)
 {
-    int buffSize = vBuffer.getMaxSize();
-    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
-//    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
-   vHeader.setOutMs(ofMap(guiHeaderOut,0.0,1.0,0.0,buffSize*oneFrameMs));
+    vMultixRenderer.setMinmaxBlend(b);
+    
+    if(b)
+    {
+
+    }
+    else
+    {
+        
+    }
     
 }
 
+#endif
+
+#ifdef PM_USE_HEADER_RENDERER
 //--------------------------------------------------------------
 void ofApp::changedHeaderDelay(float &f)
 {
@@ -156,7 +189,7 @@ void ofApp::changedHeaderDelay(float &f)
     //    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
     vHeader.setDelayMs(ofMap(guiHeaderDelay,0.0,1.0,0.0,buffSize*oneFrameMs));
 }
-
+#endif
 
 //--------------------------------------------------------------
 void ofApp::update()
@@ -176,10 +209,21 @@ void ofApp::update()
 void ofApp::draw()
 {
     
+#ifdef PM_USE_MULTIX_RENDERER
+    if(guiMultixMinMaxBlend)
+    {
+        ofBackground(0);
+    }
+    else{
+        ofBackground(255);
+    }
+#endif
+    
     ofSetColor(255);
     
     //vRendererGrabber.draw(10,10,160,120);
     //vRendererHeader.draw(10+140+10,10,160,120);
+    
     
     if(drawFullScreen)
     {
@@ -187,7 +231,12 @@ void ofApp::draw()
         ofTranslate(320,240);
         ofRotate(180,0.0,1.0,0.0);
         ofTranslate(-320,-240);
+#ifdef PM_USE_MULTIX_RENDERER
         vMultixRenderer.draw(0,0,1920,1080);
+#endif
+#ifdef PM_USE_HEADER_RENDERER
+        vRendererHeader.draw(0,0,1920,1080);
+#endif
         ofPopMatrix();
     }
     else
@@ -196,7 +245,13 @@ void ofApp::draw()
         ofTranslate(320,240);
         ofRotate(180,0.0,1.0,0.0);
         ofTranslate(-320,-240);
+#ifdef PM_USE_MULTIX_RENDERER
         vMultixRenderer.draw(0,0,640,480);
+#endif
+#ifdef PM_USE_HEADER_RENDERER
+        vRendererHeader.draw(0,0,640,480);
+#endif
+
         ofPopMatrix();
         
     }
@@ -237,35 +292,67 @@ void ofApp::audioIn(float * input, int bufferSize, int nChannels)
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-    if(key==' ')
-    {
-        if(isRecording)
-        {
-            vBuffer.stop();
-        }
-        else
-        {
-            vBuffer.resume();
-        }
-        isRecording=!isRecording;
-    }
-    else if(key=='f')
+//    if(key==' ')
+//    {
+//        if(isRecording)
+//        {
+//            vBuffer.stop();
+//        }
+//        else
+//        {
+//            vBuffer.resume();
+//        }
+//        isRecording=!isRecording;
+//    }
+    if (key=='f')
     {
         drawFullScreen=!drawFullScreen;
     }
-    else if(key=='s')
+#ifdef PM_USE_PS3EYE
+    else if(key=='g')
     {
+        PS3_autoGain=!PS3_autoGain;
+        grabber.setAutoGain(PS3_autoGain);
     }
-    else if(key=='d')
+    else if(key=='b')
     {
-        testTS.update();
-        testTS -= tdiff;
+        PS3_autoWB=!PS3_autoWB;
+        grabber.setAutoWhiteBalance(PS3_autoWB);
     }
-    else if(key=='f')
+    else if(key=='e')
     {
-        bool b=true;
-        //vHeader.getPhasors()[0]->resetPhasor(b);
+        PS3_exposure = PS3_exposure + 5;
+        grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
     }
+    else if(key=='E')
+    {
+        PS3_exposure = PS3_exposure - 5;
+        grabber.setExposure(static_cast<uint8_t> (PS3_exposure));
+    }
+    else if(key=='h')
+    {
+        PS3_hue = (PS3_hue + 5)%255;
+        grabber.setHue(static_cast<uint8_t>( PS3_hue));
+    }
+    else if(key=='H')
+    {
+        PS3_hue = (PS3_hue - 5)%255;
+        grabber.setHue(static_cast<uint8_t> (PS3_hue));
+    }
+#endif
+//    else if(key=='m')
+//    {
+//        multixMinMax = !multixMinMax;
+//        vMultixRenderer.setMinmaxBlend(multixMinMax);
+//        if(multixMinMax)
+//        {
+//            vMultixRenderer.setTint(ofColor(255,255,255,254));
+//        }
+//        else
+//        {
+//            vMultixRenderer.setTint(ofColor(255,255,255,254));
+//        }
+//    }
     
 }
 
@@ -277,12 +364,14 @@ void ofApp::keyReleased(int key){
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
 
+#ifdef PM_USE_HEADER_RENDERER
     if(ofGetKeyPressed(int('d')))
     {
         float factor = (float(ofGetWidth()-x)/float(ofGetWidth())) * vBuffer.getMaxSize();
         vHeader.setDelayMs(33.33f * factor);
         cout << "Setting delay at " << ofToString(33.33f * factor) << endl;
     }
+#endif
 }
 
 //--------------------------------------------------------------

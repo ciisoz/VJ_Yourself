@@ -7,6 +7,11 @@
 #include "mapper.h"
 #include "oscillatorBank.h"
 
+//#define PM_USE_PS3EYE
+
+//#define PM_USE_HEADER_RENDERER
+#define PM_USE_MULTIX_RENDERER
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -32,59 +37,72 @@ class ofApp : public ofBaseApp{
 
     /// GRABBER
     float						grabFPS;
-    ofxPm::VideoGrabber         grabber;
     ofVec2f						grabberResolution;
     float						grabberAspectRatio;
 
+#ifdef PM_USE_PS3EYE
+    ofxPm::VideoGrabberPS3Eye         grabber;
+
+    bool PS3_autoWB;
+    bool PS3_autoGain;
+    int PS3_exposure;
+    int PS3_hue;
+#endif
+
+#ifndef PM_USE_PS3EYE
+    ofxPm::VideoGrabber               grabber;
+#endif
+
     /// BUFFER
+    
     ofxPm::VideoBuffer			vBuffer;
     ofxPm::VideoRate			vRate;
 
-    bool                        isRecording;
-
-    /// HEADER
-    ofxPm::VideoHeader          vHeader;
-
     /// RENDERER
-    ofxPm::BasicVideoRenderer	vRendererGrabber,vRendererBuffer,vRendererHeader;
-    ofxPm::MultixRenderer       vMultixRenderer;
+    ofxPm::BasicVideoRenderer	vRendererGrabber,vRendererBuffer;
 
+    /// NPORMAL HEADER
+#ifdef PM_USE_HEADER_RENDERER
+    ofxPm::VideoHeader              vHeader;
+    ofxPm::BasicVideoRenderer   vRendererHeader;
+    void                        changedHeaderDelay(float &f);
+
+#endif
+    
+#ifdef PM_USE_MULTIX_RENDERER
+    ofxPm::MultixRenderer       vMultixRenderer;
+    ofParameter<vector<float>>  guiMultixValues;
+    ofParameter<float>          guiMultixOffset;
+    ofParameter<bool>           guiMultixMinMaxBlend;
+    void                        changedMultixValues(vector<float> &f);
+    void                        changedMultixOffset(float &f);
+    void                        changedMinMaxBlend(bool &b);
+#endif
+    
     /// GENERAL
-    Poco::Timestamp             testTS;
-    Poco::Timestamp             tsStop;
-    Poco::Timestamp::TimeDiff   tdiff;
     
     ofSoundStream soundStream;
     
     /// GUI?
-    ofParameterGroup*    parametersHeader;
+    ofParameterGroup*   parametersPlaymodes;
+    ofParameter<bool>   guiBufferIsRecording;
     ofParameter<float>  guiHeaderDelay;
-    ofParameter<float>  guiHeaderIn;
-    ofParameter<float>  guiHeaderOut;
-    ofParameter<bool>   guiHeaderIsPlaying;
-    ofParameter<vector<float>> guiMultixValues;
     
     // LISTENERS FUNCTIONS
-    void                changedHeaderIsPlaying(bool &b);
-    void                changedHeaderIn(float &f);
-    void                changedHeaderOut(float &f);
-    void                changedHeaderDelay(float &f);
-    void                changedMultixValues(vector<float> &f);
-    
+    void                changedBufferIsRecording(bool &b);
     
     //--------- PHASORS
-    //vector<phasorClass*> phasors;
+
     vector<phasorClass*> phasors;
     vector<baseOscillator*>  oscillators;
     vector<oscillatorBank*>  oscillatorBanks;
     vector<mapper*> mappers;
 
     // phasors
-//    vector<phasorClass*> getPhasors(){return phasors;};
     void    audioRateTrigger(int bufferSize);
     
     bool drawFullScreen;
 
-
+    // PS3EYE
 
 };

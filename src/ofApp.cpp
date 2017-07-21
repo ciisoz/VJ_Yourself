@@ -56,7 +56,7 @@ void ofApp::setup(){
     }
 
     grabFPS = 60;
-    grabberResolution = ofVec2f(640,480);
+    grabberResolution = ofVec2f(1920,1080);
     grabberAspectRatio = grabberResolution.x / grabberResolution.y;
     vector<ofVideoDevice> vL = grabber.listDevices();
     for(int i=0;i < vL.size();i++)
@@ -65,14 +65,14 @@ void ofApp::setup(){
     }
     grabber.setFps(grabFPS);
     //grabber.ofBaseVideoGrabber::setDesiredFrameRate(grabFPS);
-    grabber.setDeviceID(1);
+    grabber.setDeviceID(0);
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
 
     ///////////////
     /// PIPELINE
     ///////////////
     
-    vBuffer.setup(grabber, 240,true);
+    vBuffer.setup(grabber, 600,true);
     vRendererGrabber.setup(grabber);
     vRendererBuffer.setup(vBuffer);
 
@@ -166,16 +166,6 @@ void ofApp::changedMultixOffset(float &f)
 void ofApp::changedMinMaxBlend(bool &b)
 {
     vMultixRenderer.setMinmaxBlend(b);
-    
-    if(b)
-    {
-
-    }
-    else
-    {
-        
-    }
-    
 }
 
 #endif
@@ -228,9 +218,9 @@ void ofApp::draw()
     if(drawFullScreen)
     {
         ofPushMatrix();
-        ofTranslate(320,240);
+        ofTranslate(960,540);
         ofRotate(180,0.0,1.0,0.0);
-        ofTranslate(-320,-240);
+        ofTranslate(-960,-540);
 #ifdef PM_USE_MULTIX_RENDERER
         vMultixRenderer.draw(0,0,1920,1080);
 #endif

@@ -72,6 +72,12 @@
 		B06511C61F0DAA9F00CCC155 /* aubio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06511C51F0DAA9F00CCC155 /* aubio.framework */; };
 		B17490EE99CD0B1AD6EF54EA /* baseIndexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7727DB6F3F4080C1CDF539BC /* baseIndexer.cpp */; };
 		B2DB2F48D5AB3FD629D65465 /* VideoHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CA242C7F8B6C67289732038 /* VideoHeader.cpp */; };
+		B33F80321F225494002AF0A5 /* VideoGrabberDeckLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B33F80301F225494002AF0A5 /* VideoGrabberDeckLink.cpp */; };
+		B33F805D1F225536002AF0A5 /* DeckLinkAPIDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B33F804C1F225536002AF0A5 /* DeckLinkAPIDispatch.cpp */; };
+		B33F805F1F225536002AF0A5 /* ofxDeckLink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B33F80531F225536002AF0A5 /* ofxDeckLink.cpp */; };
+		B33F80601F225536002AF0A5 /* ofxDeckLinkAPIConstants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B33F80551F225536002AF0A5 /* ofxDeckLinkAPIConstants.cpp */; };
+		B33F80611F225536002AF0A5 /* ofxDeckLinkInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B33F80571F225536002AF0A5 /* ofxDeckLinkInput.cpp */; };
+		B33F80621F225536002AF0A5 /* ofxDeckLinkOutput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B33F80591F225536002AF0A5 /* ofxDeckLinkOutput.cpp */; };
 		B8C0CE8386649142DCA4F324 /* VideoSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B24CE6BD24558DCC97CEE17 /* VideoSource.cpp */; };
 		BA5FE1946333BDAFCF3928D0 /* AudioBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98F2C3A267D06D866BCC6B4D /* AudioBuffer.cpp */; };
 		BCC8D420CBA9217E437D2D76 /* ofxRtMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F634AA6CA2E3C60F3B87B59A /* ofxRtMidiIn.cpp */; };
@@ -274,6 +280,25 @@
 		B12FE8FDEA554553469235B6 /* ofPBO.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofPBO.cpp; path = src/ofPBO.cpp; sourceTree = SOURCE_ROOT; };
 		B217C7439A059C95AF956C87 /* VideoSink.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = VideoSink.h; path = ../../../addons/ofxPlaymodes/src/pipeline/video/VideoSink.h; sourceTree = SOURCE_ROOT; };
 		B31C608870ECEB2490A93736 /* ofxOscParameterSync.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscParameterSync.h; path = ../../../addons/ofxOsc/src/ofxOscParameterSync.h; sourceTree = SOURCE_ROOT; };
+		B33F80301F225494002AF0A5 /* VideoGrabberDeckLink.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VideoGrabberDeckLink.cpp; path = ../../../addons/ofxPlaymodes/src/grabbers/VideoGrabberDeckLink.cpp; sourceTree = "<group>"; };
+		B33F80311F225494002AF0A5 /* VideoGrabberDeckLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoGrabberDeckLink.h; path = ../../../addons/ofxPlaymodes/src/grabbers/VideoGrabberDeckLink.h; sourceTree = "<group>"; };
+		B33F80481F225536002AF0A5 /* DeckLinkAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPI.h; sourceTree = "<group>"; };
+		B33F80491F225536002AF0A5 /* DeckLinkAPIConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPIConfiguration.h; sourceTree = "<group>"; };
+		B33F804A1F225536002AF0A5 /* DeckLinkAPIDeckControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPIDeckControl.h; sourceTree = "<group>"; };
+		B33F804B1F225536002AF0A5 /* DeckLinkAPIDiscovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPIDiscovery.h; sourceTree = "<group>"; };
+		B33F804C1F225536002AF0A5 /* DeckLinkAPIDispatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeckLinkAPIDispatch.cpp; sourceTree = "<group>"; };
+		B33F804D1F225536002AF0A5 /* DeckLinkAPIModes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPIModes.h; sourceTree = "<group>"; };
+		B33F804E1F225536002AF0A5 /* DeckLinkAPIStreaming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPIStreaming.h; sourceTree = "<group>"; };
+		B33F804F1F225536002AF0A5 /* DeckLinkAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPITypes.h; sourceTree = "<group>"; };
+		B33F80501F225536002AF0A5 /* DeckLinkAPIVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeckLinkAPIVersion.h; sourceTree = "<group>"; };
+		B33F80531F225536002AF0A5 /* ofxDeckLink.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDeckLink.cpp; sourceTree = "<group>"; };
+		B33F80541F225536002AF0A5 /* ofxDeckLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDeckLink.h; sourceTree = "<group>"; };
+		B33F80551F225536002AF0A5 /* ofxDeckLinkAPIConstants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDeckLinkAPIConstants.cpp; sourceTree = "<group>"; };
+		B33F80561F225536002AF0A5 /* ofxDeckLinkAPIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDeckLinkAPIConstants.h; sourceTree = "<group>"; };
+		B33F80571F225536002AF0A5 /* ofxDeckLinkInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDeckLinkInput.cpp; sourceTree = "<group>"; };
+		B33F80581F225536002AF0A5 /* ofxDeckLinkInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDeckLinkInput.h; sourceTree = "<group>"; };
+		B33F80591F225536002AF0A5 /* ofxDeckLinkOutput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDeckLinkOutput.cpp; sourceTree = "<group>"; };
+		B33F805A1F225536002AF0A5 /* ofxDeckLinkOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDeckLinkOutput.h; sourceTree = "<group>"; };
 		B4A0A006318C06E07DDF19D6 /* usb_libusb10.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = usb_libusb10.h; path = ../../../addons/ofxKinect/libs/libfreenect/src/usb_libusb10.h; sourceTree = SOURCE_ROOT; };
 		B76FA489151DBAF1616DF378 /* ofxMidiIn.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMidiIn.h; path = ../../../addons/ofxMidi/src/ofxMidiIn.h; sourceTree = SOURCE_ROOT; };
 		B7B623A02730497FBCEA4FF2 /* ofxDatGuiControls.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxDatGuiControls.h; path = ../../../addons/ofxDatGui_PM/src/components/ofxDatGuiControls.h; sourceTree = SOURCE_ROOT; };
@@ -645,6 +670,8 @@
 		77D11DDB1837FF4F29D2AAF9 /* grabbers */ = {
 			isa = PBXGroup;
 			children = (
+				B33F80301F225494002AF0A5 /* VideoGrabberDeckLink.cpp */,
+				B33F80311F225494002AF0A5 /* VideoGrabberDeckLink.h */,
 				CFD0AD689A70BF53CCA19E18 /* AudioGrabber.cpp */,
 				CEB6097805B6BBDA664A1D14 /* AudioGrabber.h */,
 				384DC07071B9256320FFCBF5 /* FileGrabber.cpp */,
@@ -753,9 +780,67 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B33F80331F225536002AF0A5 /* ofxDeckLink */ = {
+			isa = PBXGroup;
+			children = (
+				B33F80451F225536002AF0A5 /* libs */,
+				B33F80521F225536002AF0A5 /* src */,
+			);
+			name = ofxDeckLink;
+			path = ../../../addons/ofxDeckLink;
+			sourceTree = "<group>";
+		};
+		B33F80451F225536002AF0A5 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				B33F80461F225536002AF0A5 /* DeckLinkAPI */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		B33F80461F225536002AF0A5 /* DeckLinkAPI */ = {
+			isa = PBXGroup;
+			children = (
+				B33F80471F225536002AF0A5 /* include */,
+			);
+			path = DeckLinkAPI;
+			sourceTree = "<group>";
+		};
+		B33F80471F225536002AF0A5 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				B33F80481F225536002AF0A5 /* DeckLinkAPI.h */,
+				B33F80491F225536002AF0A5 /* DeckLinkAPIConfiguration.h */,
+				B33F804A1F225536002AF0A5 /* DeckLinkAPIDeckControl.h */,
+				B33F804B1F225536002AF0A5 /* DeckLinkAPIDiscovery.h */,
+				B33F804C1F225536002AF0A5 /* DeckLinkAPIDispatch.cpp */,
+				B33F804D1F225536002AF0A5 /* DeckLinkAPIModes.h */,
+				B33F804E1F225536002AF0A5 /* DeckLinkAPIStreaming.h */,
+				B33F804F1F225536002AF0A5 /* DeckLinkAPITypes.h */,
+				B33F80501F225536002AF0A5 /* DeckLinkAPIVersion.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		B33F80521F225536002AF0A5 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				B33F80531F225536002AF0A5 /* ofxDeckLink.cpp */,
+				B33F80541F225536002AF0A5 /* ofxDeckLink.h */,
+				B33F80551F225536002AF0A5 /* ofxDeckLinkAPIConstants.cpp */,
+				B33F80561F225536002AF0A5 /* ofxDeckLinkAPIConstants.h */,
+				B33F80571F225536002AF0A5 /* ofxDeckLinkInput.cpp */,
+				B33F80581F225536002AF0A5 /* ofxDeckLinkInput.h */,
+				B33F80591F225536002AF0A5 /* ofxDeckLinkOutput.cpp */,
+				B33F805A1F225536002AF0A5 /* ofxDeckLinkOutput.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				B33F80331F225536002AF0A5 /* ofxDeckLink */,
 				93621CC75EED5D310C6ADC19 /* ofxAubio */,
 				E99400E5E21DFD21A45E2E82 /* ofxDatGui_PM */,
 				AD6A40A761D375590DCD858F /* ofxFastFboReader */,
@@ -1172,10 +1257,13 @@
 				63F9FE1D90234FA6DE6F509E /* ofxMidi.cpp in Sources */,
 				0BFC9C20FD7E3C8D5873AA97 /* ofxMidiIn.cpp in Sources */,
 				C6FE64F74F1EA1D98C8F9847 /* ofxMidiMessage.cpp in Sources */,
+				B33F80621F225536002AF0A5 /* ofxDeckLinkOutput.cpp in Sources */,
 				83D9F930112E0944444124EE /* ofxMidiOut.cpp in Sources */,
+				B33F805D1F225536002AF0A5 /* DeckLinkAPIDispatch.cpp in Sources */,
 				63D0FD8734D5760B8080C901 /* RtMidi.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
+				B33F80321F225494002AF0A5 /* VideoGrabberDeckLink.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
@@ -1192,6 +1280,7 @@
 				BA5FE1946333BDAFCF3928D0 /* AudioBuffer.cpp in Sources */,
 				EEF54F54F1CD2FCF991A4DDC /* AudioBufferSamples.cpp in Sources */,
 				F280E2BC17D392E626F1C6F3 /* AudioBufferSamplesMarker.cpp in Sources */,
+				B33F80611F225536002AF0A5 /* ofxDeckLinkInput.cpp in Sources */,
 				FD0AF370DC74D25D420AEE82 /* Buffer.cpp in Sources */,
 				62D8CDFC38967E443FC0483E /* VideoBuffer.cpp in Sources */,
 				79CDBC02D4F9690C4DD086D8 /* VideoDryWetGPU.cpp in Sources */,
@@ -1200,6 +1289,7 @@
 				A8DA273CA0DD54ED87BA4029 /* VideoFeedbackPixelsGPU.cpp in Sources */,
 				7BF47F1952D92454DD0E9298 /* VideoFilter.cpp in Sources */,
 				98A7C5CF272531314ECBEED1 /* VideoMixerGPU.cpp in Sources */,
+				B33F80601F225536002AF0A5 /* ofxDeckLinkAPIConstants.cpp in Sources */,
 				2B39FC7D05A5DA1136B1CA44 /* VideoRate.cpp in Sources */,
 				F24253B53A364547B453081C /* AudioFrame.cpp in Sources */,
 				FA3C841ED8F2881D7CBF052D /* Frame.cpp in Sources */,
@@ -1220,6 +1310,7 @@
 				BE1E805468D22A5E292FBE67 /* ofxOscEventsReceiver.cpp in Sources */,
 				2C3C5E5112B230470AADBD4E /* AudioSink.cpp in Sources */,
 				E8F1C6641FC365B0375EF1A6 /* AudioSource.cpp in Sources */,
+				B33F805F1F225536002AF0A5 /* ofxDeckLink.cpp in Sources */,
 				A927ADF845D4C1CD10987F55 /* VideoSink.cpp in Sources */,
 				B8C0CE8386649142DCA4F324 /* VideoSource.cpp in Sources */,
 				208D1A800C242368C2581285 /* AudioRenderer.cpp in Sources */,

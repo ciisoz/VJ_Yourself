@@ -7,8 +7,9 @@
 #include "mapper.h"
 #include "oscillatorBank.h"
 
+//#define PM_USE_SYSTEM_GRABBER
 //#define PM_USE_PS3EYE
-
+#define PM_USE_DECKLINK
 //#define PM_USE_HEADER_RENDERER
 #define PM_USE_MULTIX_RENDERER
 
@@ -49,10 +50,14 @@ class ofApp : public ofBaseApp{
     int PS3_hue;
 #endif
 
-#ifndef PM_USE_PS3EYE
+#ifdef PM_USE_SYSTEM_GRABBER
     ofxPm::VideoGrabber               grabber;
 #endif
 
+#ifdef PM_USE_DECKLINK
+    ofxPm::VideoGrabberDeckLink grabber;
+#endif
+    
     /// BUFFER
     
     ofxPm::VideoBuffer			vBuffer;

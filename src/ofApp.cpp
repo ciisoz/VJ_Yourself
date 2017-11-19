@@ -94,10 +94,11 @@ void ofApp::setup(){
 
     copiesOverflowBuffer=false;
 
-    vMultixRenderer.setup(vBuffer,numCopies);
-    vMultixRenderer.setDelayOffset(0.002f);
-    vMultixRenderer.setMinmaxBlend(1);
-    vMultixRenderer.setTint(ofColor(255,255,255,254));
+    
+    multixFilter.setup(vBuffer);
+    multixFilter.setMinmaxBlend(1);
+    videoRendererMultix.setup(multixFilter);
+    
 #endif
 
     // PRINT INFOS
@@ -135,7 +136,8 @@ void ofApp::setup(){
     parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend Min/Max",true));
     parametersPlaymodes->add(guiMultixValues.set("Multix Values",guiMultixValues));
     
-    parametersPlaymodes->add(guiLinearDistribution.set("Linear Distribution",true));
+    parametersPlaymodes->add(guiMultixLinearDistribution.set("Linear Distribution",true));
+    parametersPlaymodes->add(guiMultixOpacityMode.set("Multix Color Mode",0,0,2));
     parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,vBuffer.getMaxSize()));
     parametersPlaymodes->add(guiBeatDiv.set("Offset Beat Div",1,1,32));
     parametersPlaymodes->add(guiBeatMult.set("Offset Beat Mult",1,1,32));
@@ -145,7 +147,7 @@ void ofApp::setup(){
     guiBeatMult.addListener(this,&ofApp::changedNumCopies);
     guiMultixValues.addListener(this, &ofApp::changedMultixValues);
     guiMultixMinMaxBlend.addListener(this, &ofApp::changedMinMaxBlend);
-
+    guiMultixOpacityMode.addListener(this,&ofApp::changedMultixOpacityMode);
 
 #endif
     
@@ -201,11 +203,11 @@ void ofApp::changedNumCopies(int &_i)
     float oneCopyMs = oneBeatMs / BPMfactor;
     
     vector<float> vf;
-    vMultixRenderer.setNumHeaders(numCopies);
+    multixFilter.setNumHeaders(numCopies);
     
     for(int i=0;i<guiNumCopies;i++)
     {
-        if(guiLinearDistribution)
+        if(guiMultixLinearDistribution)
         {
             // in linear distribution, the copies are spaced equally a time/distance defined by BPM and beatMult/Div
             vf.push_back(i*oneCopyMs);
@@ -217,7 +219,7 @@ void ofApp::changedNumCopies(int &_i)
             // TO DO
         }
     }
-    vMultixRenderer.updateValuesMs(vf);
+    multixFilter.updateValuesMs(vf);
     
     // Calculating "Overflow" it happens when we're trying to fetch a video frame that is out of bounds in the buffer
     float oneFrameMs = (1.0 / grabFPS) * 1000.0;
@@ -234,16 +236,21 @@ void ofApp::changedNumCopies(int &_i)
     }
 }
 
+//--------------------------------------------------------------
+void ofApp::changedMultixOpacityMode(int &i)
+{
+    multixFilter.setOpacityMode(i);
+}
 
 //--------------------------------------------------------------
 void ofApp::changedMultixValues(vector<float> &vf)
-{    
-    vMultixRenderer.updateValuesPct(vf);
+{
+    multixFilter.updateValuesPct(vf);
 }
 //--------------------------------------------------------------
 void ofApp::changedMinMaxBlend(bool &b)
 {
-    vMultixRenderer.setMinmaxBlend(b);
+    multixFilter.setMinmaxBlend(b);
 }
 
 
@@ -290,34 +297,37 @@ void ofApp::draw()
     
     ofSetColor(0);
     ofDrawRectangle(0,0,grabberResolution.x, grabberResolution.y+20);
-    ofSetColor(255);
     
     //vRendererGrabber.draw(10,10,160,120);
     //vRendererHeader.draw(10+140+10,10,160,120);
     
     
-    if(drawFullScreen)
+//    if(drawFullScreen)
+//    {
+//        ofPushMatrix();
+//        ofTranslate(960,540);
+//        ofRotate(180,0.0,1.0,0.0);
+//        ofTranslate(-960,-540);
+//#ifdef PM_USE_MULTIX_RENDERER
+//        vMultixRenderer.draw(0,0,1920,1080);
+//#endif
+//#ifdef PM_USE_HEADER_RENDERER
+//        vRendererHeader.draw(0,0,1920,1080);
+//#endif
+//        ofPopMatrix();
+//    }
+//    else
     {
+        ofSetColor(255);
         ofPushMatrix();
-        ofTranslate(960,540);
+        ofVec2f moveToRotate = ofVec2f(grabberResolution.x,grabberResolution.y);
+        ofTranslate(moveToRotate.x/2.0,moveToRotate.y/2.0);
         ofRotate(180,0.0,1.0,0.0);
-        ofTranslate(-960,-540);
+        ofTranslate(-moveToRotate.x/2.0,-moveToRotate.y/2.0);
 #ifdef PM_USE_MULTIX_RENDERER
-        vMultixRenderer.draw(0,0,1920,1080);
-#endif
-#ifdef PM_USE_HEADER_RENDERER
-        vRendererHeader.draw(0,0,1920,1080);
-#endif
-        ofPopMatrix();
-    }
-    else
-    {
-        ofPushMatrix();
-        ofTranslate(320,240);
-        ofRotate(180,0.0,1.0,0.0);
-        ofTranslate(-320,-240);
-#ifdef PM_USE_MULTIX_RENDERER
-        vMultixRenderer.draw(0,0,640,480);
+        ofSetColor(255);
+        videoRendererMultix.draw(0,0,moveToRotate.x,moveToRotate.y);
+
 #endif
 #ifdef PM_USE_HEADER_RENDERER
         vRendererHeader.draw(0,0,640,480);

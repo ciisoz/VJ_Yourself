@@ -11,8 +11,8 @@
 #define PM_USE_PS3EYE
 //#define PM_USE_DECKLINK
 
-#define PM_USE_HEADER_RENDERER
-//#define PM_USE_MULTIX_RENDERER
+//#define PM_USE_HEADER_RENDERER
+#define PM_USE_MULTIX_RENDERER
 
 // XXX : poor performanace at fullHD + 240 copies of multix in Decklink grabbing.
 // TO DO : try what if i disconnect the DeckLink color conv. shader in terms of performance at FHd, 60 fps, Decklink capture... if it helps performance, implement a new multix that renders the copies from Decklink without shader to an fbo then draw this fbo with the ColorConversion shader from DeckLink... does it work ?
@@ -80,20 +80,23 @@ class ofApp : public ofBaseApp{
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
-    ofxPm::MultixRenderer       vMultixRenderer;
     ofParameter<vector<float>>  guiMultixValues;
     ofParameter<bool>           guiMultixMinMaxBlend;
     ofParameter<int>            guiBeatMult;
     ofParameter<int>            guiBeatDiv;
     ofParameter<int>            guiNumCopies;
-    ofParameter<bool>           guiLinearDistribution;
+    ofParameter<bool>           guiMultixLinearDistribution;
+    ofParameter<int>            guiMultixOpacityMode;
 
     void                        changedMultixValues(vector<float> &f);
     void                        changedMinMaxBlend(bool &b);
     void                        changedNumCopies(int &i);
+    void                        changedMultixOpacityMode(int &i);
 
     bool                        copiesOverflowBuffer;
 
+    ofxPm::VideoRenderer        videoRendererMultix;
+    ofxPm::MultixFilter                multixFilter;
     
 #endif
     

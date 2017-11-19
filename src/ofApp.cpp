@@ -3,15 +3,18 @@
 #include "parametersControl.h"
 
 int NUM_PHASORS = 2;
-int numCopies = 60;
+int numCopies = 60*12;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
+    ofDisableArbTex();
     drawFullScreen = false;
+    grabFPS = 60;
+    
 #ifdef PM_USE_PS3EYE
     PS3_autoWB=false;
     PS3_autoGain=false;
-    PS3_exposure=120;
+    PS3_exposure=254;
     PS3_hue = 0;
 #endif
     
@@ -23,22 +26,24 @@ void ofApp::setup(){
     parametersControl::getInstance().setup();
     bpmControl::getInstance().setup();
     
+    ofAddListener(bpmControl::getInstance().bpmChanged, this, &ofApp::changedBPM);
+    
     for(int i=0;i<NUM_PHASORS;i++)
     {
-        phasorClass* p = new phasorClass(i,ofPoint(660+300*i,0));
+        phasorClass* p = new phasorClass(i+1,ofPoint(660+300*i,0));
         phasors.push_back(p);
         phasors[i]->getParameterGroup()->getFloat("BPM") = 60.0;
         phasors[i]->getParameterGroup()->getFloat("Bounce") = false;
         
-        baseOscillator* o = new baseOscillator(i,true,ofPoint(660+300*i,300));
+        baseOscillator* o = new baseOscillator(i+1,true,ofPoint(660+300*i,300));
         oscillators.push_back(o);
         
         
         //int nOscillators, bool gui, int _bankId, ofPoint pos) : baseIndexer(nOscillators
-        oscillatorBank* ob = new oscillatorBank(numCopies,true,i,ofPoint(660+300*i,600));
+        oscillatorBank* ob = new oscillatorBank(numCopies,true,i+1,ofPoint(660+300*i,600));
         oscillatorBanks.push_back(ob);
 
-        mapper* m = new mapper(i,ofPoint(960+300,200*i));
+        mapper* m = new mapper(i+1,ofPoint(960+300,200*i));
         mappers.push_back(m);
     }
     
@@ -56,7 +61,7 @@ void ofApp::setup(){
     }
 
     grabFPS = 60;
-    grabberResolution = ofVec2f(1920,1080);
+    grabberResolution = ofVec2f(640,480);
     grabberAspectRatio = grabberResolution.x / grabberResolution.y;
     vector<ofVideoDevice> vL = grabber.listDevices();
     for(int i=0;i < vL.size();i++)
@@ -67,14 +72,17 @@ void ofApp::setup(){
     //grabber.ofBaseVideoGrabber::setDesiredFrameRate(grabFPS);
     grabber.setDeviceID(0);
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
-
+#ifdef PM_USE_PS3EYE
+    grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
+#endif
     ///////////////
     /// PIPELINE
     ///////////////
     
-    vBuffer.setup(grabber, 600,true);
-    vRendererGrabber.setup(grabber);
-    vRendererBuffer.setup(vBuffer);
+    fx.setup(grabber);
+    vBuffer.setup(fx, numCopies,true);
+    //vRendererGrabber.setup(grabber);
+    //vRendererBuffer.setup(vBuffer);
 
 #ifdef PM_USE_HEADER_RENDERER
     vHeader.setup(vBuffer);
@@ -83,6 +91,9 @@ void ofApp::setup(){
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
+
+    copiesOverflowBuffer=false;
+
     vMultixRenderer.setup(vBuffer,numCopies);
     vMultixRenderer.setDelayOffset(0.002f);
     vMultixRenderer.setMinmaxBlend(1);
@@ -102,31 +113,46 @@ void ofApp::setup(){
     /// GUI
     //////////
     parametersPlaymodes = new ofParameterGroup();
-    
-    parametersPlaymodes->setName("PLAYMODES VJYOURSELF");
+    parametersPlaymodes->setName("PLAYMODES VJYOURSELF 1");
+    // FX GUI
     parametersPlaymodes->add(guiBufferIsRecording.set("Buffer Recording",true));
+    parametersPlaymodes->add(guiLumaKeyThreshold.set("Luma Key Threshold", 0.0, 0.0, 1.0));
+    parametersPlaymodes->add(guiLumaKeySmooth.set("Luma Key Smooth", 0.0, 0.0, 1.0));
+    
+    guiLumaKeyThreshold.addListener(this,&ofApp::changedLumaKeyThreshold);
+    guiLumaKeySmooth.addListener(this,&ofApp::changedLumaKeySmooth);
+    guiBufferIsRecording.addListener(this, &ofApp::changedBufferIsRecording);
+
+    
+#ifdef PM_USE_HEADER_RENDERER
     parametersPlaymodes->add(guiHeaderDelay.set("Header", 0.0, 0.0, 1.0));
+    guiHeaderDelay.addListener(this,&ofApp::changedHeaderDelay);
+
+#endif
+    
 #ifdef PM_USE_MULTIX_RENDERER
-    parametersPlaymodes->add(guiMultixOffset.set("Multix Offset",0.04,0.0,10.0));
+
     parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend Min/Max",true));
-    parametersPlaymodes->add(guiMultixValues.set("Multix Values[]",guiMultixValues));
+    parametersPlaymodes->add(guiMultixValues.set("Multix Values",guiMultixValues));
+    
+    parametersPlaymodes->add(guiLinearDistribution.set("Linear Distribution",true));
+    parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,vBuffer.getMaxSize()));
+    parametersPlaymodes->add(guiBeatDiv.set("Offset Beat Div",1,1,32));
+    parametersPlaymodes->add(guiBeatMult.set("Offset Beat Mult",1,1,32));
+
+    guiNumCopies.addListener(this, &ofApp::changedNumCopies);
+    guiBeatDiv.addListener(this,&ofApp::changedNumCopies);
+    guiBeatMult.addListener(this,&ofApp::changedNumCopies);
+    guiMultixValues.addListener(this, &ofApp::changedMultixValues);
+    guiMultixMinMaxBlend.addListener(this, &ofApp::changedMinMaxBlend);
+
+
 #endif
     
     parametersControl::getInstance().createGuiFromParams(parametersPlaymodes, ofColor::orange, ofPoint(350,500));
-
     parametersControl::getInstance().setSliderPrecision(1,"Multix Offset", 4);
-    // LISTENERS FUNCTIONS
-    guiBufferIsRecording.addListener(this, &ofApp::changedBufferIsRecording);
 
-#ifdef PM_USE_HEADER_RENDERER
-    guiHeaderDelay.addListener(this,&ofApp::changedHeaderDelay);
-#endif
-    
-#ifdef PM_USE_MULTIX_RENDERER
-    guiMultixValues.addListener(this, &ofApp::changedMultixValues);
-    guiMultixOffset.addListener(this, &ofApp::changedMultixOffset);
-    guiMultixMinMaxBlend.addListener(this, &ofApp::changedMinMaxBlend);
-#endif
+
     
 }
 //--------------------------------------------------------------
@@ -145,28 +171,81 @@ void ofApp::changedBufferIsRecording(bool &b)
 
 }
 
-#ifdef PM_USE_MULTIX_RENDERER
 //--------------------------------------------------------------
-void ofApp::changedMultixValues(vector<float> &vf)
+void ofApp::changedBPM(float &_f)
 {
-    //cout << "*" << endl;
-    //    for(int i=0;i<f.size();i++)
-    //    {
-    //        cout << f[i] << "," << endl;
-    //    }
-    
-    vMultixRenderer.updateValues(vf);
+    int i;
+#ifdef PM_USE_MULTIX_RENDERER
+    changedNumCopies(i);
+#endif
+}
+
+//--------------------------------------------------------------
+void ofApp::changedLumaKeyThreshold(float &f)
+{
+    fx.setLumaThreshold(f);
 }
 //--------------------------------------------------------------
-void ofApp::changedMultixOffset(float &f)
+void ofApp::changedLumaKeySmooth(float &f)
 {
-    vMultixRenderer.setDelayOffset(f);
+    fx.setLumaSmooth(f);
+}
+
+#ifdef PM_USE_MULTIX_RENDERER
+//--------------------------------------------------------------
+void ofApp::changedNumCopies(int &_i)
+{
+    float gBPM = parametersControl::getInstance().getGlobalBPM();
+    float BPMfactor = (float(guiBeatMult)/float(guiBeatDiv));
+    float oneBeatMs = (60.0/gBPM)*1000;
+    float oneCopyMs = oneBeatMs / BPMfactor;
+    
+    vector<float> vf;
+    vMultixRenderer.setNumHeaders(numCopies);
+    
+    for(int i=0;i<guiNumCopies;i++)
+    {
+        if(guiLinearDistribution)
+        {
+            // in linear distribution, the copies are spaced equally a time/distance defined by BPM and beatMult/Div
+            vf.push_back(i*oneCopyMs);
+        }
+        else
+        {
+            // non-linear distribution, the copies are distributed from 0 to the time expressed by BPM/Mult/Div.
+            // And inside this period the copies are distributed by Generator
+            // TO DO
+        }
+    }
+    vMultixRenderer.updateValuesMs(vf);
+    
+    // Calculating "Overflow" it happens when we're trying to fetch a video frame that is out of bounds in the buffer
+    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
+    float timeInBuffer = vBuffer.getMaxSize()*oneFrameMs;
+    float timeInCopies = oneCopyMs*guiNumCopies;
+    if(timeInCopies > timeInBuffer)
+    {
+        cout << "OVERFLOOOOW!! OneCopyMs : " << oneCopyMs << " // guiNumCopies : " << guiNumCopies << " = " << timeInCopies << " //  > " << timeInBuffer << endl;
+        copiesOverflowBuffer = true;
+    }
+    else
+    {
+        copiesOverflowBuffer = false;
+    }
+}
+
+
+//--------------------------------------------------------------
+void ofApp::changedMultixValues(vector<float> &vf)
+{    
+    vMultixRenderer.updateValuesPct(vf);
 }
 //--------------------------------------------------------------
 void ofApp::changedMinMaxBlend(bool &b)
 {
     vMultixRenderer.setMinmaxBlend(b);
 }
+
 
 #endif
 
@@ -179,6 +258,8 @@ void ofApp::changedHeaderDelay(float &f)
     //    cout << "Header Out Changed : MaxSize " << buffSize << " OneFrameMs " << oneFrameMs << endl;
     vHeader.setDelayMs(ofMap(guiHeaderDelay,0.0,1.0,0.0,buffSize*oneFrameMs));
 }
+
+
 #endif
 
 //--------------------------------------------------------------
@@ -191,8 +272,6 @@ void ofApp::update()
     {
         phasors[i]->getPhasor();
     }
-    
-
 }
 
 //--------------------------------------------------------------
@@ -200,15 +279,17 @@ void ofApp::draw()
 {
     
 #ifdef PM_USE_MULTIX_RENDERER
-    if(guiMultixMinMaxBlend)
+    if(copiesOverflowBuffer)
     {
-        ofBackground(0);
+        ofBackground(255,0,0);
     }
     else{
-        ofBackground(255);
+        ofBackground(25);
     }
 #endif
     
+    ofSetColor(0);
+    ofDrawRectangle(0,0,grabberResolution.x, grabberResolution.y+20);
     ofSetColor(255);
     
     //vRendererGrabber.draw(10,10,160,120);
@@ -255,7 +336,7 @@ void ofApp::draw()
     else if(actualFPS>=30) ofSetColor(255,128,0);
     else ofSetColor(255,0,0);
     
-    ofDrawBitmapString(actualFPS, ofGetWidth()-25, 25);
+    ofDrawBitmapString(int(actualFPS), grabberResolution.x-20, grabberResolution.y+15);
     
 //    ofSetColor(255);
 //    ofDrawBitmapString("Frame[0] Timestamp : " + ofToString(vBuffer.getFirstFrameTimestamp().raw()),ofGetWidth()-350,50);
@@ -313,11 +394,13 @@ void ofApp::keyPressed(int key)
     {
         PS3_exposure = PS3_exposure + 5;
         grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
+        cout << PS3_exposure << endl;
     }
     else if(key=='E')
     {
         PS3_exposure = PS3_exposure - 5;
         grabber.setExposure(static_cast<uint8_t> (PS3_exposure));
+        cout << PS3_exposure << endl;
     }
     else if(key=='h')
     {

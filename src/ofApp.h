@@ -8,10 +8,15 @@
 #include "oscillatorBank.h"
 
 //#define PM_USE_SYSTEM_GRABBER
-//#define PM_USE_PS3EYE
-#define PM_USE_DECKLINK
-//#define PM_USE_HEADER_RENDERER
-#define PM_USE_MULTIX_RENDERER
+#define PM_USE_PS3EYE
+//#define PM_USE_DECKLINK
+
+#define PM_USE_HEADER_RENDERER
+//#define PM_USE_MULTIX_RENDERER
+
+// XXX : poor performanace at fullHD + 240 copies of multix in Decklink grabbing.
+// TO DO : try what if i disconnect the DeckLink color conv. shader in terms of performance at FHd, 60 fps, Decklink capture... if it helps performance, implement a new multix that renders the copies from Decklink without shader to an fbo then draw this fbo with the ColorConversion shader from DeckLink... does it work ?
+
 
 class ofApp : public ofBaseApp{
 
@@ -33,81 +38,89 @@ class ofApp : public ofBaseApp{
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    void audioIn(float * input, int bufferSize, int nChannels);
-    ofEvent<int> audioRateTriggerEvent;
 
     /// GRABBER
     float						grabFPS;
     ofVec2f						grabberResolution;
     float						grabberAspectRatio;
 
-#ifdef PM_USE_PS3EYE
-    ofxPm::VideoGrabberPS3Eye         grabber;
+    #ifdef PM_USE_PS3EYE
+        ofxPm::VideoGrabberPS3Eye       grabber;
+        bool PS3_autoWB;
+        bool PS3_autoGain;
+        int PS3_exposure;
+        int PS3_hue;
+    #endif
 
-    bool PS3_autoWB;
-    bool PS3_autoGain;
-    int PS3_exposure;
-    int PS3_hue;
-#endif
+    #ifdef PM_USE_SYSTEM_GRABBER
+        ofxPm::VideoGrabber             grabber;
+    #endif
 
-#ifdef PM_USE_SYSTEM_GRABBER
-    ofxPm::VideoGrabber               grabber;
-#endif
-
-#ifdef PM_USE_DECKLINK
-    ofxPm::VideoGrabberDeckLink grabber;
-#endif
+    #ifdef PM_USE_DECKLINK
+        ofxPm::VideoGrabberDeckLink     grabber;
+    #endif
     
     /// BUFFER
-    
-    ofxPm::VideoBuffer			vBuffer;
-    ofxPm::VideoRate			vRate;
+    ofxPm::VideoBuffer              vBuffer;
 
-    /// RENDERER
-    ofxPm::BasicVideoRenderer	vRendererGrabber,vRendererBuffer;
+    // FX LUMA
+    ofxPm::VideoTestShaderFX        fx;
+    ofParameter<float>              guiLumaKeyThreshold;
+    ofParameter<float>              guiLumaKeySmooth;
+    void                            changedLumaKeyThreshold(float &f);
+    void                            changedLumaKeySmooth(float &f);
 
-    /// NPORMAL HEADER
 #ifdef PM_USE_HEADER_RENDERER
+    /// HEADER
     ofxPm::VideoHeader              vHeader;
-    ofxPm::BasicVideoRenderer   vRendererHeader;
-    void                        changedHeaderDelay(float &f);
-
+    ofxPm::VideoRenderer            vRendererHeader;
+    
+    ofParameter<float>              guiHeaderDelay;
+    void                            changedHeaderDelay(float &f);
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
     ofxPm::MultixRenderer       vMultixRenderer;
     ofParameter<vector<float>>  guiMultixValues;
-    ofParameter<float>          guiMultixOffset;
     ofParameter<bool>           guiMultixMinMaxBlend;
+    ofParameter<int>            guiBeatMult;
+    ofParameter<int>            guiBeatDiv;
+    ofParameter<int>            guiNumCopies;
+    ofParameter<bool>           guiLinearDistribution;
+
     void                        changedMultixValues(vector<float> &f);
-    void                        changedMultixOffset(float &f);
     void                        changedMinMaxBlend(bool &b);
+    void                        changedNumCopies(int &i);
+
+    bool                        copiesOverflowBuffer;
+
+    
 #endif
     
     /// GENERAL
-    
-    ofSoundStream soundStream;
-    
+    ofSoundStream               soundStream;
+    bool                        drawFullScreen;
+
     /// GUI?
-    ofParameterGroup*   parametersPlaymodes;
-    ofParameter<bool>   guiBufferIsRecording;
-    ofParameter<float>  guiHeaderDelay;
+    ofParameterGroup*           parametersPlaymodes;
+    ofParameter<bool>           guiBufferIsRecording;
     
     // LISTENERS FUNCTIONS
-    void                changedBufferIsRecording(bool &b);
+    void                        changedBufferIsRecording(bool &b);
+    void                        changedBPM(float &_f);
     
-    //--------- PHASORS
-
-    vector<phasorClass*> phasors;
-    vector<baseOscillator*>  oscillators;
-    vector<oscillatorBank*>  oscillatorBanks;
+    // GENERATOR STUFF
+    /////////////////////
+    vector<phasorClass*>        phasors;
+    vector<baseOscillator*>     oscillators;
+    vector<oscillatorBank*>     oscillatorBanks;
     vector<mapper*> mappers;
-
-    // phasors
-    void    audioRateTrigger(int bufferSize);
     
-    bool drawFullScreen;
+    void                        audioRateTrigger(int bufferSize);
+    ofEvent<int>                audioRateTriggerEvent;
+    
+    void audioIn(float * input, int bufferSize, int nChannels);
+    
 
-    // PS3EYE
 
 };

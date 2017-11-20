@@ -4,6 +4,7 @@
 
 int NUM_PHASORS = 2;
 int numCopies = 60*12;
+int numOscillatorBanks = numCopies;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
@@ -40,7 +41,7 @@ void ofApp::setup(){
         
         
         //int nOscillators, bool gui, int _bankId, ofPoint pos) : baseIndexer(nOscillators
-        oscillatorBank* ob = new oscillatorBank(numCopies,true,i+1,ofPoint(660+300*i,600));
+        oscillatorBank* ob = new oscillatorBank(numOscillatorBanks,true,i+1,ofPoint(660+300*i,600));
         oscillatorBanks.push_back(ob);
 
         mapper* m = new mapper(i+1,ofPoint(960+300,200*i));
@@ -132,15 +133,14 @@ void ofApp::setup(){
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
-
+    parametersPlaymodes->add(guiTitle.set("MULTIX"));
     parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend Min/Max",true));
-    parametersPlaymodes->add(guiMultixValues.set("Multix Values",guiMultixValues));
-    
-    parametersPlaymodes->add(guiMultixLinearDistribution.set("Linear Distribution",true));
     parametersPlaymodes->add(guiMultixOpacityMode.set("Multix Color Mode",0,0,2));
     parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,vBuffer.getMaxSize()));
     parametersPlaymodes->add(guiBeatDiv.set("Offset Beat Div",1,1,32));
     parametersPlaymodes->add(guiBeatMult.set("Offset Beat Mult",1,1,32));
+    parametersPlaymodes->add(guiMultixLinearDistribution.set("Linear Distribution",true));
+    parametersPlaymodes->add(guiMultixValues.set("Multix Values Vector",guiMultixValues));
 
     guiNumCopies.addListener(this, &ofApp::changedNumCopies);
     guiBeatDiv.addListener(this,&ofApp::changedNumCopies);
@@ -217,6 +217,14 @@ void ofApp::changedNumCopies(int &_i)
             // non-linear distribution, the copies are distributed from 0 to the time expressed by BPM/Mult/Div.
             // And inside this period the copies are distributed by Generator
             // TO DO
+            float outMin,outMax;
+            int oscillatorReIndex = int(ofMap(i,0,float(guiNumCopies),0,float(numOscillatorBanks)));
+            mutex.lock();
+            {
+                vf.push_back(ofMap(guiMultixValues.get()[oscillatorReIndex],0.0,1.0, 0.0, oneCopyMs));
+            }
+            mutex.unlock();
+            cout << "app : " << oscillatorReIndex << " // guiMultiValue : " << guiMultixValues.get()[oscillatorReIndex] << endl;
         }
     }
     multixFilter.updateValuesMs(vf);
@@ -245,7 +253,8 @@ void ofApp::changedMultixOpacityMode(int &i)
 //--------------------------------------------------------------
 void ofApp::changedMultixValues(vector<float> &vf)
 {
-    multixFilter.updateValuesPct(vf);
+    int i=guiNumCopies;
+    changedNumCopies(i);
 }
 //--------------------------------------------------------------
 void ofApp::changedMinMaxBlend(bool &b)

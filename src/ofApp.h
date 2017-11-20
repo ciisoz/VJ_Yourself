@@ -80,6 +80,7 @@ class ofApp : public ofBaseApp{
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
+    ofParameter<string>          guiTitle;
     ofParameter<vector<float>>  guiMultixValues;
     ofParameter<bool>           guiMultixMinMaxBlend;
     ofParameter<int>            guiBeatMult;
@@ -103,7 +104,7 @@ class ofApp : public ofBaseApp{
     /// GENERAL
     ofSoundStream               soundStream;
     bool                        drawFullScreen;
-
+    ofMutex                     mutex;
     /// GUI?
     ofParameterGroup*           parametersPlaymodes;
     ofParameter<bool>           guiBufferIsRecording;

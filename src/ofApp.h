@@ -77,6 +77,8 @@ class ofApp : public ofBaseApp{
     
     ofParameter<float>              guiHeaderDelay;
     void                            changedHeaderDelay(float &f);
+    ofxPm::VideoTrioRenderer        videoTrioRender;
+    
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
@@ -123,8 +125,8 @@ class ofApp : public ofBaseApp{
     void                        audioRateTrigger(int bufferSize);
     ofEvent<int>                audioRateTriggerEvent;
     
-    void audioIn(float * input, int bufferSize, int nChannels);
-    
+    void                        audioIn(float * input, int bufferSize, int nChannels);
+    void                        drawProgramWindow(ofEventArgs & args);
 
 
 };

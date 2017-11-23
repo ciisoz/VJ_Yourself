@@ -73,6 +73,7 @@ void ofApp::setup(){
     //grabber.ofBaseVideoGrabber::setDesiredFrameRate(grabFPS);
     grabber.setDeviceID(0);
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
+
 #ifdef PM_USE_PS3EYE
     grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
 #endif
@@ -89,6 +90,8 @@ void ofApp::setup(){
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(0.0f);
     vRendererHeader.setup(vHeader);
+    videoTrioRender.setup(vHeader);
+    
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
@@ -108,7 +111,7 @@ void ofApp::setup(){
     cout << "Buffer : Total Time : " << vBuffer.getTotalTime() << endl;
     cout << "Buffer : Total Frames : " << vBuffer.getTotalFrames() << endl;
     
-    ofBackground(0);
+    ofBackground(30);
     
     soundStream.setup(this, 0, 2, 44100, 512, 4);
     
@@ -133,14 +136,14 @@ void ofApp::setup(){
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
-    parametersPlaymodes->add(guiTitle.set("MULTIX"));
-    parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend Min/Max",true));
+    parametersPlaymodes->add(guiTitle.set("MULTIX_label", " "));
+    parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend MinMax",true));
     parametersPlaymodes->add(guiMultixOpacityMode.set("Multix Color Mode",0,0,2));
     parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,vBuffer.getMaxSize()));
     parametersPlaymodes->add(guiBeatDiv.set("Offset Beat Div",1,1,32));
     parametersPlaymodes->add(guiBeatMult.set("Offset Beat Mult",1,1,32));
     parametersPlaymodes->add(guiMultixLinearDistribution.set("Linear Distribution",true));
-    parametersPlaymodes->add(guiMultixValues.set("Multix Values Vector",guiMultixValues));
+    parametersPlaymodes->add(guiMultixValues.set("Multix Values Vect",guiMultixValues));
 
     guiNumCopies.addListener(this, &ofApp::changedNumCopies);
     guiBeatDiv.addListener(this,&ofApp::changedNumCopies);
@@ -152,7 +155,6 @@ void ofApp::setup(){
 #endif
     
     parametersControl::getInstance().createGuiFromParams(parametersPlaymodes, ofColor::orange, ofPoint(350,500));
-    parametersControl::getInstance().setSliderPrecision(1,"Multix Offset", 4);
 
 
     
@@ -224,7 +226,7 @@ void ofApp::changedNumCopies(int &_i)
                 vf.push_back(ofMap(guiMultixValues.get()[oscillatorReIndex],0.0,1.0, 0.0, oneCopyMs));
             }
             mutex.unlock();
-            cout << "app : " << oscillatorReIndex << " // guiMultiValue : " << guiMultixValues.get()[oscillatorReIndex] << endl;
+//            cout << "app : " << oscillatorReIndex << " // guiMultiValue : " << guiMultixValues.get()[oscillatorReIndex] << endl;
         }
     }
     multixFilter.updateValuesMs(vf);
@@ -294,6 +296,7 @@ void ofApp::update()
 void ofApp::draw()
 {
     
+    
 #ifdef PM_USE_MULTIX_RENDERER
     if(copiesOverflowBuffer)
     {
@@ -327,19 +330,23 @@ void ofApp::draw()
 //    }
 //    else
     {
-        ofSetColor(255);
+
         ofPushMatrix();
         ofVec2f moveToRotate = ofVec2f(grabberResolution.x,grabberResolution.y);
         ofTranslate(moveToRotate.x/2.0,moveToRotate.y/2.0);
         ofRotate(180,0.0,1.0,0.0);
         ofTranslate(-moveToRotate.x/2.0,-moveToRotate.y/2.0);
+
 #ifdef PM_USE_MULTIX_RENDERER
         ofSetColor(255);
         videoRendererMultix.draw(0,0,moveToRotate.x,moveToRotate.y);
 
 #endif
 #ifdef PM_USE_HEADER_RENDERER
+        
+        ofSetColor(255);
         vRendererHeader.draw(0,0,640,480);
+        //videoTrioRender.draw(0,0,640,480);
 #endif
 
         ofPopMatrix();
@@ -363,7 +370,10 @@ void ofApp::draw()
 //    ofDrawBitmapString("tdiff : " + ofToString(tdiff),ofGetWidth()-350,100);
     //    ofDrawBitmapString("StopTS : " + ofToString(tsStop.elapsed()),ofGetWidth()-350,105);
     //    ofDrawBitmapString("StopTS R: " + ofToString(tsStop.raw()),ofGetWidth()-350,140);
-}
+    
+
+    
+ }
 
 //-----------------------------------
 void ofApp::audioIn(float * input, int bufferSize, int nChannels)
@@ -372,7 +382,7 @@ void ofApp::audioIn(float * input, int bufferSize, int nChannels)
     
     for(int i=0;i<NUM_PHASORS;i++)
     {
-        phasors[i]->audioIn(bufferSize);
+        phasors[i]->audioIn(input,bufferSize,nChannels);
     }
     
      bpmControl::getInstance().audioIn(input, bufferSize, nChannels);
@@ -513,4 +523,46 @@ void ofApp::audioRateTrigger(int bufferSize)
 //    }
     
     
+}
+//------------------------------------------------------
+void ofApp::drawProgramWindow(ofEventArgs & args)
+{
+    
+    ofPushMatrix();
+    ofSetColor(255);
+    ofPopMatrix();
+
+//    // transformation for flipping ...
+//    ofSetColor(255);
+//    ofPushMatrix();
+//    ofVec2f moveToRotate = ofVec2f(ofGetWindowWidth(),ofGetWindowHeight());
+//    ofTranslate(moveToRotate.x/2.0,moveToRotate.y/2.0);
+//    ofRotate(180,0.0,1.0,0.0);
+//    ofTranslate(-moveToRotate.x/2.0,-moveToRotate.y/2.0);
+//
+//    
+    
+#ifdef PM_USE_MULTIX_RENDERER
+    ofSetColor(255);
+    //videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+//    videoRendererMultix.draw(0,0,160,120);
+    ofTexture t = videoRendererMultix.getLastFrameTexture();
+    if(!t.isAllocated())
+    {
+        t.allocate(grabberResolution.x, grabberResolution.y, GL_RGBA);
+        cout << "ofApp::Drawing Program windows allocating texture!!" << endl;
+    }
+    t.getTextureData().bFlipTextureHoriz = true;
+    t.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+#endif
+#ifdef PM_USE_HEADER_RENDERER
+        ofSetColor(255);
+    vRendererHeader.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+#endif
+
+    
+    ofSetColor(255,0,0,64);
+    ofDrawCircle(150,150,75);
+
+
 }

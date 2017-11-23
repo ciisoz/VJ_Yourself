@@ -68,8 +68,11 @@
 		ACE7DC9A3223ED5EE1B80074 /* cameras.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DBD37876A11E46E4D7069B3 /* cameras.c */; };
 		ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADD194746185E2DA11468377 /* IpEndpointName.cpp */; };
 		B01B18F5A36A433B93C73288 /* phasorClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1610F26DEAA6698F74998401 /* phasorClass.cpp */; };
+		B01B6FC11FC34C89002DBB8E /* VideoTrioRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B01B6FBF1FC34C89002DBB8E /* VideoTrioRenderer.cpp */; };
 		B02D2D4F1FC1FA0A004A6C9E /* MultixFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B02D2D4D1FC1FA0A004A6C9E /* MultixFilter.cpp */; };
 		B06511C61F0DAA9F00CCC155 /* aubio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06511C51F0DAA9F00CCC155 /* aubio.framework */; };
+		B0B63A371FC5CEB0002DE864 /* vectorMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0B63A351FC5CEB0002DE864 /* vectorMapper.cpp */; };
+		B0B63A3E1FC5CF1D002DE864 /* midiGateIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0B63A3B1FC5CF1D002DE864 /* midiGateIn.cpp */; };
 		B0E7A5A71FB7144C002BE437 /* VideoTestShaderFX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0E7A5A51FB7144C002BE437 /* VideoTestShaderFX.cpp */; };
 		B0F1B2351FB0A0F80030B900 /* BasicVideoRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0F1B2331FB0A0F80030B900 /* BasicVideoRenderer.cpp */; };
 		B17490EE99CD0B1AD6EF54EA /* baseIndexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7727DB6F3F4080C1CDF539BC /* baseIndexer.cpp */; };
@@ -275,9 +278,16 @@
 		ACD7E8A8C4194C8125D0E20C /* AudioBufferSamplesMarker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = AudioBufferSamplesMarker.h; path = ../../../addons/ofxPlaymodes/src/buffers/AudioBufferSamplesMarker.h; sourceTree = SOURCE_ROOT; };
 		ADD194746185E2DA11468377 /* IpEndpointName.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = IpEndpointName.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.cpp; sourceTree = SOURCE_ROOT; };
 		AE335EB4709BFD4671EEAC84 /* MessageMappingOscPacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = MessageMappingOscPacketListener.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/MessageMappingOscPacketListener.h; sourceTree = SOURCE_ROOT; };
+		B01B6FBF1FC34C89002DBB8E /* VideoTrioRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VideoTrioRenderer.cpp; path = ../../../addons/ofxPlaymodes/src/renderers/VideoTrioRenderer.cpp; sourceTree = "<group>"; };
+		B01B6FC01FC34C89002DBB8E /* VideoTrioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoTrioRenderer.h; path = ../../../addons/ofxPlaymodes/src/renderers/VideoTrioRenderer.h; sourceTree = "<group>"; };
 		B02D2D4D1FC1FA0A004A6C9E /* MultixFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MultixFilter.cpp; path = ../../../addons/ofxPlaymodes/src/filters/MultixFilter.cpp; sourceTree = "<group>"; };
 		B02D2D4E1FC1FA0A004A6C9E /* MultixFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultixFilter.h; path = ../../../addons/ofxPlaymodes/src/filters/MultixFilter.h; sourceTree = "<group>"; };
 		B06511C51F0DAA9F00CCC155 /* aubio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = aubio.framework; sourceTree = "<group>"; };
+		B0B63A351FC5CEB0002DE864 /* vectorMapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vectorMapper.cpp; path = ../../../addons/ofxPlaymodes/src/generator/vectorMapper.cpp; sourceTree = "<group>"; };
+		B0B63A361FC5CEB0002DE864 /* vectorMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vectorMapper.h; path = ../../../addons/ofxPlaymodes/src/generator/vectorMapper.h; sourceTree = "<group>"; };
+		B0B63A3A1FC5CF1D002DE864 /* midiConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = midiConnection.h; path = ../../../addons/ofxPlaymodes/src/generator/midiConnection.h; sourceTree = "<group>"; };
+		B0B63A3B1FC5CF1D002DE864 /* midiGateIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = midiGateIn.cpp; path = ../../../addons/ofxPlaymodes/src/generator/midiGateIn.cpp; sourceTree = "<group>"; };
+		B0B63A3C1FC5CF1D002DE864 /* midiGateIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = midiGateIn.h; path = ../../../addons/ofxPlaymodes/src/generator/midiGateIn.h; sourceTree = "<group>"; };
 		B0B93157A98496BC938080D3 /* AudioSample.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = AudioSample.h; path = ../../../addons/ofxPlaymodes/src/frames/AudioSample.h; sourceTree = SOURCE_ROOT; };
 		B0E7A5A51FB7144C002BE437 /* VideoTestShaderFX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VideoTestShaderFX.cpp; path = ../../../addons/ofxPlaymodes/src/filters/VideoTestShaderFX.cpp; sourceTree = "<group>"; };
 		B0E7A5A61FB7144C002BE437 /* VideoTestShaderFX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoTestShaderFX.h; path = ../../../addons/ofxPlaymodes/src/filters/VideoTestShaderFX.h; sourceTree = "<group>"; };
@@ -472,6 +482,11 @@
 		2017AF95FFC3C6F9C6594411 /* generator */ = {
 			isa = PBXGroup;
 			children = (
+				B0B63A3A1FC5CF1D002DE864 /* midiConnection.h */,
+				B0B63A3B1FC5CF1D002DE864 /* midiGateIn.cpp */,
+				B0B63A3C1FC5CF1D002DE864 /* midiGateIn.h */,
+				B0B63A351FC5CEB0002DE864 /* vectorMapper.cpp */,
+				B0B63A361FC5CEB0002DE864 /* vectorMapper.h */,
 				7727DB6F3F4080C1CDF539BC /* baseIndexer.cpp */,
 				7A0F97D1BF8B26D627BDE669 /* baseIndexer.h */,
 				6D85A31E2A3C4DA0D8A9955A /* baseOscillator.cpp */,
@@ -665,6 +680,8 @@
 		6F6CF9D8C8B617E6E61EB454 /* renderers */ = {
 			isa = PBXGroup;
 			children = (
+				B01B6FBF1FC34C89002DBB8E /* VideoTrioRenderer.cpp */,
+				B01B6FC01FC34C89002DBB8E /* VideoTrioRenderer.h */,
 				B0F1B2331FB0A0F80030B900 /* BasicVideoRenderer.cpp */,
 				B0F1B2341FB0A0F80030B900 /* BasicVideoRenderer.h */,
 				005634E29FC93FDB9F010C6F /* AudioRenderer.cpp */,
@@ -1277,6 +1294,7 @@
 				B33F80321F225494002AF0A5 /* VideoGrabberDeckLink.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
+				B0B63A3E1FC5CF1D002DE864 /* midiGateIn.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
@@ -1310,6 +1328,7 @@
 				C2496B7841A3EA0B95FCEEA1 /* bpmControl.cpp in Sources */,
 				86DFBF165FC82B020DE3C500 /* mapper.cpp in Sources */,
 				B0E7A5A71FB7144C002BE437 /* VideoTestShaderFX.cpp in Sources */,
+				B01B6FC11FC34C89002DBB8E /* VideoTrioRenderer.cpp in Sources */,
 				5E2972BC594E19BE7E32AA81 /* oscillatorBank.cpp in Sources */,
 				B0F1B2351FB0A0F80030B900 /* BasicVideoRenderer.cpp in Sources */,
 				681ED69C2D2ED1F14933C999 /* parametersControl.cpp in Sources */,
@@ -1326,6 +1345,7 @@
 				B33F805F1F225536002AF0A5 /* ofxDeckLink.cpp in Sources */,
 				A927ADF845D4C1CD10987F55 /* VideoSink.cpp in Sources */,
 				B8C0CE8386649142DCA4F324 /* VideoSource.cpp in Sources */,
+				B0B63A371FC5CEB0002DE864 /* vectorMapper.cpp in Sources */,
 				208D1A800C242368C2581285 /* AudioRenderer.cpp in Sources */,
 				9E5092BA17299788D658A397 /* MultixRenderer.cpp in Sources */,
 				04DE0099DFD26E11BE513443 /* VideoRenderer.cpp in Sources */,

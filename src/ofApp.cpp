@@ -75,7 +75,7 @@ void ofApp::setup(){
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
 
 #ifdef PM_USE_PS3EYE
-    grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
+    //grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
 #endif
     ///////////////
     /// PIPELINE
@@ -84,7 +84,9 @@ void ofApp::setup(){
     fx.setup(grabber);
     gradient.setup(fx);
     
+//    vBuffer.setupNodeBased(numCopies,true);
     vBuffer.setup(gradient, numCopies,true);
+
     //vRendererGrabber.setup(grabber);
     //vRendererBuffer.setup(vBuffer);
 
@@ -117,7 +119,7 @@ void ofApp::setup(){
     
     soundStream.setup(this, 0, 2, 44100, 512, 4);
     
-    /// GUI
+    /// PM GUI
     //////////
     parametersPlaymodes = new ofParameterGroup();
     parametersPlaymodes->setName("PLAYMODES VJYOURSELF 1");
@@ -432,28 +434,28 @@ void ofApp::keyPressed(int key)
         PS3_autoWB=!PS3_autoWB;
         grabber.setAutoWhiteBalance(PS3_autoWB);
     }
-    else if(key=='e')
-    {
-        PS3_exposure = PS3_exposure + 5;
-        grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
-        cout << PS3_exposure << endl;
-    }
-    else if(key=='E')
-    {
-        PS3_exposure = PS3_exposure - 5;
-        grabber.setExposure(static_cast<uint8_t> (PS3_exposure));
-        cout << PS3_exposure << endl;
-    }
-    else if(key=='h')
-    {
-        PS3_hue = (PS3_hue + 5)%255;
-        grabber.setHue(static_cast<uint8_t>( PS3_hue));
-    }
-    else if(key=='H')
-    {
-        PS3_hue = (PS3_hue - 5)%255;
-        grabber.setHue(static_cast<uint8_t> (PS3_hue));
-    }
+//    else if(key=='e')
+//    {
+//        PS3_exposure = PS3_exposure + 5;
+//        grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
+//        cout << PS3_exposure << endl;
+//    }
+//    else if(key=='E')
+//    {
+//        PS3_exposure = PS3_exposure - 5;
+//        grabber.setExposure(static_cast<uint8_t> (PS3_exposure));
+//        cout << PS3_exposure << endl;
+//    }
+//    else if(key=='h')
+//    {
+//        PS3_hue = (PS3_hue + 5)%255;
+//        grabber.setHue(static_cast<uint8_t>( PS3_hue));
+//    }
+//    else if(key=='H')
+//    {
+//        PS3_hue = (PS3_hue - 5)%255;
+//        grabber.setHue(static_cast<uint8_t> (PS3_hue));
+//    }
 #endif
 //    else if(key=='m')
 //    {

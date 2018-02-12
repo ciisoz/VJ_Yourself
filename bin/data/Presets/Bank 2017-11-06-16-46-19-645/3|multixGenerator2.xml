@@ -38,7 +38,7 @@
 		</MODULE>
 	</DYNAMIC_NODES>
 	<phasor_1>
-		<BPM>0.0643209</BPM>
+		<BPM>0.0600601</BPM>
 		<Beats_Div>0</Beats_Div>
 		<Beats_Mult>0</Beats_Mult>
 		<Quantization>1</Quantization>
@@ -73,7 +73,7 @@
 		<Symmetry>0</Symmetry>
 		<Index_Random>0</Index_Random>
 		<Index_Offset>0.5</Index_Offset>
-		<Index_Quantization>0.157163</Index_Quantization>
+		<Index_Quantization>0.00973574</Index_Quantization>
 		<Index_Combination>0</Index_Combination>
 		<Index_Modulo>1</Index_Modulo>
 		<Phasor_In>0</Phasor_In>
@@ -81,7 +81,7 @@
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
 		<Offset>0.5</Offset>
-		<Pow>0.522901</Pow>
+		<Pow>0.5125</Pow>
 		<Bi_Pow>0.5</Bi_Pow>
 		<Quantization>1</Quantization>
 		<Pulse_Width>1</Pulse_Width>
@@ -99,7 +99,7 @@
 		<Output>0</Output>
 	</mapper_1>
 	<phasor_2>
-		<BPM>0.0643209</BPM>
+		<BPM>0.0600601</BPM>
 		<Beats_Div>0</Beats_Div>
 		<Beats_Mult>0</Beats_Mult>
 		<Quantization>1</Quantization>
@@ -107,10 +107,10 @@
 		<Min_Value>0</Min_Value>
 		<Max_Value>1</Max_Value>
 		<Reset_Phase>0</Reset_Phase>
-		<Loop>1</Loop>
+		<Loop>0</Loop>
 		<Bounce>0</Bounce>
 		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0.908588</Phasor_Monitor>
+		<Phasor_Monitor>0</Phasor_Monitor>
 	</phasor_2>
 	<oscillator_2>
 		<Phasor_In>0</Phasor_In>
@@ -164,10 +164,10 @@
 		<Luma_Key_Threshold>0.0725</Luma_Key_Threshold>
 		<Luma_Key_Smooth>0.0573</Luma_Key_Smooth>
 		<Multix_Blend_MinMax>1</Multix_Blend_MinMax>
-		<Multix_Color_Mode>1</Multix_Color_Mode>
-		<Num_Copies>0.157163</Num_Copies>
-		<Offset_Beat_Div>0</Offset_Beat_Div>
-		<Offset_Beat_Mult>0.0322581</Offset_Beat_Mult>
+		<Multix_Color_Mode>0.5</Multix_Color_Mode>
+		<Num_Copies>0.00973574</Num_Copies>
+		<Offset_Beat_Div>0.0322581</Offset_Beat_Div>
+		<Offset_Beat_Mult>0</Offset_Beat_Mult>
 		<Linear_Distribution>0</Linear_Distribution>
 	</PLAYMODES_VJYOURSELF_1>
 	<CONNECTIONS>

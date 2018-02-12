@@ -73,6 +73,7 @@
 		B06511C61F0DAA9F00CCC155 /* aubio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06511C51F0DAA9F00CCC155 /* aubio.framework */; };
 		B0B63A371FC5CEB0002DE864 /* vectorMapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0B63A351FC5CEB0002DE864 /* vectorMapper.cpp */; };
 		B0B63A3E1FC5CF1D002DE864 /* midiGateIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0B63A3B1FC5CF1D002DE864 /* midiGateIn.cpp */; };
+		B0C97E50202E783D009F226D /* GradientEdgesFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0C97E4E202E783D009F226D /* GradientEdgesFilter.cpp */; };
 		B0E7A5A71FB7144C002BE437 /* VideoTestShaderFX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0E7A5A51FB7144C002BE437 /* VideoTestShaderFX.cpp */; };
 		B0F1B2351FB0A0F80030B900 /* BasicVideoRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B0F1B2331FB0A0F80030B900 /* BasicVideoRenderer.cpp */; };
 		B17490EE99CD0B1AD6EF54EA /* baseIndexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7727DB6F3F4080C1CDF539BC /* baseIndexer.cpp */; };
@@ -289,6 +290,8 @@
 		B0B63A3B1FC5CF1D002DE864 /* midiGateIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = midiGateIn.cpp; path = ../../../addons/ofxPlaymodes/src/generator/midiGateIn.cpp; sourceTree = "<group>"; };
 		B0B63A3C1FC5CF1D002DE864 /* midiGateIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = midiGateIn.h; path = ../../../addons/ofxPlaymodes/src/generator/midiGateIn.h; sourceTree = "<group>"; };
 		B0B93157A98496BC938080D3 /* AudioSample.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = AudioSample.h; path = ../../../addons/ofxPlaymodes/src/frames/AudioSample.h; sourceTree = SOURCE_ROOT; };
+		B0C97E4E202E783D009F226D /* GradientEdgesFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GradientEdgesFilter.cpp; path = ../../../addons/ofxPlaymodes/src/filters/GradientEdgesFilter.cpp; sourceTree = "<group>"; };
+		B0C97E4F202E783D009F226D /* GradientEdgesFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GradientEdgesFilter.h; path = ../../../addons/ofxPlaymodes/src/filters/GradientEdgesFilter.h; sourceTree = "<group>"; };
 		B0E7A5A51FB7144C002BE437 /* VideoTestShaderFX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VideoTestShaderFX.cpp; path = ../../../addons/ofxPlaymodes/src/filters/VideoTestShaderFX.cpp; sourceTree = "<group>"; };
 		B0E7A5A61FB7144C002BE437 /* VideoTestShaderFX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoTestShaderFX.h; path = ../../../addons/ofxPlaymodes/src/filters/VideoTestShaderFX.h; sourceTree = "<group>"; };
 		B0F1B2331FB0A0F80030B900 /* BasicVideoRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BasicVideoRenderer.cpp; path = ../../../addons/ofxPlaymodes/src/renderers/BasicVideoRenderer.cpp; sourceTree = "<group>"; };
@@ -588,6 +591,8 @@
 		418E56FFF105CF2AAC8FE2BC /* filters */ = {
 			isa = PBXGroup;
 			children = (
+				B0C97E4E202E783D009F226D /* GradientEdgesFilter.cpp */,
+				B0C97E4F202E783D009F226D /* GradientEdgesFilter.h */,
 				B02D2D4D1FC1FA0A004A6C9E /* MultixFilter.cpp */,
 				B02D2D4E1FC1FA0A004A6C9E /* MultixFilter.h */,
 				B0E7A5A51FB7144C002BE437 /* VideoTestShaderFX.cpp */,
@@ -1295,6 +1300,7 @@
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				B0B63A3E1FC5CF1D002DE864 /* midiGateIn.cpp in Sources */,
+				B0C97E50202E783D009F226D /* GradientEdgesFilter.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,

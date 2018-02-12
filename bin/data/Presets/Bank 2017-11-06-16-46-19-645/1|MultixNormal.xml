@@ -1,13 +1,41 @@
 <PRESET>
 	<DYNAMIC_NODES>
-		<phasor_0>660_0</phasor_0>
-		<phasor_1>960_0</phasor_1>
-		<oscillator_0>660_300</oscillator_0>
-		<oscillator_1>960_300</oscillator_1>
-		<oscillatorBank_0>660_600_720</oscillatorBank_0>
-		<oscillatorBank_1>960_600_720</oscillatorBank_1>
-		<waveScope>0</waveScope>
-		<colorApplier>-1_-1</colorApplier>
+		<MODULE>
+			<name>phasor 1</name>
+			<pos>660_0_0</pos>
+		</MODULE>
+		<MODULE>
+			<name>oscillator 1</name>
+			<pos>660_300_0</pos>
+		</MODULE>
+		<MODULE>
+			<name>oscillatorBank 1</name>
+			<pos>660_600_960</pos>
+		</MODULE>
+		<MODULE>
+			<name>mapper 1</name>
+			<pos>1260_0_0</pos>
+		</MODULE>
+		<MODULE>
+			<name>phasor 2</name>
+			<pos>960_0_0</pos>
+		</MODULE>
+		<MODULE>
+			<name>oscillator 2</name>
+			<pos>960_300_0</pos>
+		</MODULE>
+		<MODULE>
+			<name>oscillatorBank 2</name>
+			<pos>960_600_960</pos>
+		</MODULE>
+		<MODULE>
+			<name>mapper 2</name>
+			<pos>1260_200_0</pos>
+		</MODULE>
+		<MODULE>
+			<name>PLAYMODES VJYOURSELF 1</name>
+			<pos>350_500_0</pos>
+		</MODULE>
 	</DYNAMIC_NODES>
 	<phasor_1>
 		<BPM>0.0600601</BPM>
@@ -21,7 +49,7 @@
 		<Loop>1</Loop>
 		<Bounce>0</Bounce>
 		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0.368617</Phasor_Monitor>
+		<Phasor_Monitor>0.508934</Phasor_Monitor>
 	</phasor_1>
 	<oscillator_1>
 		<Phasor_In>0</Phasor_In>
@@ -29,32 +57,38 @@
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
 		<Offset>0.5</Offset>
-		<Pow>0.5125</Pow>
+		<Pow>0.5</Pow>
+		<Bi_Pow>0.5</Bi_Pow>
 		<Quantization>1</Quantization>
+		<Pulse_Width>1</Pulse_Width>
+		<Skew>0.5</Skew>
 		<Fader>1</Fader>
+		<Invert>0</Invert>
 		<Wave_Select>0</Wave_Select>
-		<Square_PWM>0.5</Square_PWM>
-		<Output>0</Output>
+		<Output>0.5</Output>
 	</oscillator_1>
 	<oscillatorBank_1>
-		<Num_Waves>0.00138889</Num_Waves>
-		<Invert>0</Invert>
+		<Num_Waves>0.00104167</Num_Waves>
+		<Index_Invert>0</Index_Invert>
 		<Symmetry>0</Symmetry>
 		<Index_Random>0</Index_Random>
 		<Index_Offset>0.5</Index_Offset>
-		<Index_Quantization>1</Index_Quantization>
-		<Combination>0</Combination>
-		<Modulo>1</Modulo>
-		<Phasor_In>0</Phasor_In>
+		<Index_Quantization>0</Index_Quantization>
+		<Index_Combination>0</Index_Combination>
+		<Index_Modulo>1</Index_Modulo>
+		<Phasor_In>0.508934</Phasor_In>
 		<Phase_Offset>0</Phase_Offset>
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
 		<Offset>0.5</Offset>
-		<Pow>0.5125</Pow>
+		<Pow>0.5</Pow>
+		<Bi_Pow>0.5</Bi_Pow>
 		<Quantization>1</Quantization>
+		<Pulse_Width>1</Pulse_Width>
+		<Skew>0.5</Skew>
 		<Fader>1</Fader>
+		<Invert>0</Invert>
 		<Wave_Select>0</Wave_Select>
-		<Square_PWM>0.5</Square_PWM>
 	</oscillatorBank_1>
 	<mapper_1>
 		<Input>0</Input>
@@ -76,7 +110,7 @@
 		<Loop>1</Loop>
 		<Bounce>0</Bounce>
 		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0.368617</Phasor_Monitor>
+		<Phasor_Monitor>0.508934</Phasor_Monitor>
 	</phasor_2>
 	<oscillator_2>
 		<Phasor_In>0</Phasor_In>
@@ -84,32 +118,38 @@
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
 		<Offset>0.5</Offset>
-		<Pow>0.5125</Pow>
+		<Pow>0.5</Pow>
+		<Bi_Pow>0.5</Bi_Pow>
 		<Quantization>1</Quantization>
+		<Pulse_Width>1</Pulse_Width>
+		<Skew>0.5</Skew>
 		<Fader>1</Fader>
+		<Invert>0</Invert>
 		<Wave_Select>0</Wave_Select>
-		<Square_PWM>0.5</Square_PWM>
-		<Output>0</Output>
+		<Output>0.5</Output>
 	</oscillator_2>
 	<oscillatorBank_2>
-		<Num_Waves>0.00138889</Num_Waves>
-		<Invert>0</Invert>
+		<Num_Waves>0.00104167</Num_Waves>
+		<Index_Invert>0</Index_Invert>
 		<Symmetry>0</Symmetry>
 		<Index_Random>0</Index_Random>
 		<Index_Offset>0.5</Index_Offset>
 		<Index_Quantization>1</Index_Quantization>
-		<Combination>0</Combination>
-		<Modulo>1</Modulo>
+		<Index_Combination>0</Index_Combination>
+		<Index_Modulo>1</Index_Modulo>
 		<Phasor_In>0</Phasor_In>
 		<Phase_Offset>0</Phase_Offset>
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
 		<Offset>0.5</Offset>
-		<Pow>0.5125</Pow>
+		<Pow>0.5</Pow>
+		<Bi_Pow>0.5</Bi_Pow>
 		<Quantization>1</Quantization>
+		<Pulse_Width>1</Pulse_Width>
+		<Skew>0.5</Skew>
 		<Fader>1</Fader>
+		<Invert>0</Invert>
 		<Wave_Select>0</Wave_Select>
-		<Square_PWM>0.5</Square_PWM>
 	</oscillatorBank_2>
 	<mapper_2>
 		<Input>0</Input>
@@ -123,4 +163,29 @@
 		<Buffer_Recording>1</Buffer_Recording>
 		<Luma_Key_Threshold>0</Luma_Key_Threshold>
 		<Luma_Key_Smooth>0</Luma_Key_Smooth>
-		<
+		<Gradient_Width>0.1565</Gradient_Width>
+		<Multix_Blend_MinMax>1</Multix_Blend_MinMax>
+		<Multix_Color_Mode>0</Multix_Color_Mode>
+		<Num_Copies>0</Num_Copies>
+		<Offset_Beat_Div>0</Offset_Beat_Div>
+		<Offset_Beat_Mult>0.0322581</Offset_Beat_Mult>
+		<Linear_Distribution>1</Linear_Distribution>
+	</PLAYMODES_VJYOURSELF_1>
+	<CONNECTIONS>
+		<CONNECTION>
+			<source>phasor_1-|-Phasor_Monitor</source>
+			<sink>oscillatorBank_1-|-Phasor_In</sink>
+			<minmax>0-|-1</minmax>
+		</CONNECTION>
+		<CONNECTION>
+			<source>oscillatorBank_1-|-Oscillator_Out</source>
+			<sink>PLAYMODES_VJYOURSELF_1-|-Multix_Values_Vect</sink>
+			<minmax>0-|-1</minmax>
+		</CONNECTION>
+		<CONNECTION>
+			<source>PLAYMODES_VJYOURSELF_1-|-Num_Copies</source>
+			<sink>oscillatorBank_1-|-Index_Quantization</sink>
+			<minmax>0-|-1</minmax>
+		</CONNECTION>
+	</CONNECTIONS>
+</PRESET>

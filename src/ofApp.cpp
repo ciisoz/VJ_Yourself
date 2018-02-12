@@ -3,7 +3,7 @@
 #include "parametersControl.h"
 
 int NUM_PHASORS = 2;
-int numCopies = 60*12;
+int numCopies = 240*4;
 int numOscillatorBanks = numCopies;
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -82,7 +82,9 @@ void ofApp::setup(){
     ///////////////
     
     fx.setup(grabber);
-    vBuffer.setup(fx, numCopies,true);
+    gradient.setup(fx);
+    
+    vBuffer.setup(gradient, numCopies,true);
     //vRendererGrabber.setup(grabber);
     //vRendererBuffer.setup(vBuffer);
 
@@ -119,15 +121,19 @@ void ofApp::setup(){
     //////////
     parametersPlaymodes = new ofParameterGroup();
     parametersPlaymodes->setName("PLAYMODES VJYOURSELF 1");
-    // FX GUI
+    
+    // MAIN GUI
+    parametersPlaymodes->add(guiTitleMain.set("MAIN_label", " "));
     parametersPlaymodes->add(guiBufferIsRecording.set("Buffer Recording",true));
+    // FX GUI
     parametersPlaymodes->add(guiLumaKeyThreshold.set("Luma Key Threshold", 0.0, 0.0, 1.0));
     parametersPlaymodes->add(guiLumaKeySmooth.set("Luma Key Smooth", 0.0, 0.0, 1.0));
+    parametersPlaymodes->add(guiGradientWidth.set("Gradient Width", 0.0, 0.0, 1.0));
     
     guiLumaKeyThreshold.addListener(this,&ofApp::changedLumaKeyThreshold);
     guiLumaKeySmooth.addListener(this,&ofApp::changedLumaKeySmooth);
     guiBufferIsRecording.addListener(this, &ofApp::changedBufferIsRecording);
-
+    guiGradientWidth.addListener(this,&ofApp::changedGradientWidth);
     
 #ifdef PM_USE_HEADER_RENDERER
     parametersPlaymodes->add(guiHeaderDelay.set("Header", 0.0, 0.0, 1.0));
@@ -136,7 +142,7 @@ void ofApp::setup(){
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
-    parametersPlaymodes->add(guiTitle.set("MULTIX_label", " "));
+    parametersPlaymodes->add(guiTitleMultix.set("MULTIX_label", " "));
     parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend MinMax",true));
     parametersPlaymodes->add(guiMultixOpacityMode.set("Multix Color Mode",0,0,2));
     parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,vBuffer.getMaxSize()));
@@ -172,7 +178,8 @@ void ofApp::changedBufferIsRecording(bool &b)
     {
         vBuffer.stop();
     }
-
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -189,6 +196,12 @@ void ofApp::changedLumaKeyThreshold(float &f)
 {
     fx.setLumaThreshold(f);
 }
+
+void ofApp::changedGradientWidth(float &f)
+{
+    gradient.setGradientWidth(f);
+}
+
 //--------------------------------------------------------------
 void ofApp::changedLumaKeySmooth(float &f)
 {
@@ -237,7 +250,7 @@ void ofApp::changedNumCopies(int &_i)
     float timeInCopies = oneCopyMs*guiNumCopies;
     if(timeInCopies > timeInBuffer)
     {
-        cout << "OVERFLOOOOW!! OneCopyMs : " << oneCopyMs << " // guiNumCopies : " << guiNumCopies << " = " << timeInCopies << " //  > " << timeInBuffer << endl;
+        cout << "OVERFLOOOOW!! OneCopyMs : " << oneCopyMs << " // guiNumCopies : " << guiNumCopies << " = " << timeInCopies << " //  > " << timeInBuffer << " // buffer Size : " << vBuffer.getMaxSize() << endl;
         copiesOverflowBuffer = true;
     }
     else
@@ -339,7 +352,7 @@ void ofApp::draw()
 
 #ifdef PM_USE_MULTIX_RENDERER
         ofSetColor(255);
-        videoRendererMultix.draw(0,0,moveToRotate.x,moveToRotate.y);
+        //videoRendererMultix.draw(0,0,moveToRotate.x,moveToRotate.y);
 
 #endif
 #ifdef PM_USE_HEADER_RENDERER
@@ -527,10 +540,10 @@ void ofApp::audioRateTrigger(int bufferSize)
 //------------------------------------------------------
 void ofApp::drawProgramWindow(ofEventArgs & args)
 {
-    
-    ofPushMatrix();
-    ofSetColor(255);
-    ofPopMatrix();
+//    if(ofGetElapsedTimef()<2.0f)
+//    {
+//       return;
+//    }
 
 //    // transformation for flipping ...
 //    ofSetColor(255);
@@ -541,19 +554,27 @@ void ofApp::drawProgramWindow(ofEventArgs & args)
 //    ofTranslate(-moveToRotate.x/2.0,-moveToRotate.y/2.0);
 //
 //    
+
+    
     
 #ifdef PM_USE_MULTIX_RENDERER
     ofSetColor(255);
-    //videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
-//    videoRendererMultix.draw(0,0,160,120);
-    ofTexture t = videoRendererMultix.getLastFrameTexture();
-    if(!t.isAllocated())
-    {
-        t.allocate(grabberResolution.x, grabberResolution.y, GL_RGBA);
-        cout << "ofApp::Drawing Program windows allocating texture!!" << endl;
-    }
-    t.getTextureData().bFlipTextureHoriz = true;
-    t.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+//    //videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+////    videoRendererMultix.draw(0,0,160,120);
+//    ofTexture t = videoRendererMultix.getLastFrameTexture();
+//    if(!t.isAllocated())
+//    {
+//        t.allocate(grabberResolution.x, grabberResolution.y, GL_RGBA);
+//        cout << "ofApp::Drawing Program windows allocating texture!!" << endl;
+//    }
+//    t.getTextureData().bFlipTextureHoriz = true;
+//    t.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+    ofSetColor(255);
+    //vBuffer.draw();
+    videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+    ofSetColor(255,0,0);
+    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 20);
+    ofSetColor(255);
 #endif
 #ifdef PM_USE_HEADER_RENDERER
         ofSetColor(255);
@@ -561,8 +582,10 @@ void ofApp::drawProgramWindow(ofEventArgs & args)
 #endif
 
     
-    ofSetColor(255,0,0,64);
-    ofDrawCircle(150,150,75);
 
+}
 
+//--------------------------------------------------------------
+void ofApp::setupSecondScreen(){
+    ofSetBackgroundColor(0,0,0);
 }

@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxPlaymodes.h"
+
 #include "phasorClass.h"
 #include "baseOscillator.h"
 #include "mapper.h"
@@ -16,7 +17,7 @@
 
 // XXX : poor performanace at fullHD + 240 copies of multix in Decklink grabbing.
 // TO DO : try what if i disconnect the DeckLink color conv. shader in terms of performance at FHd, 60 fps, Decklink capture... if it helps performance, implement a new multix that renders the copies from Decklink without shader to an fbo then draw this fbo with the ColorConversion shader from DeckLink... does it work ?
-
+// TO DO : when drawing color modes in multix ... mode 1 or 2 seems different opacity results ...?À
 
 class ofApp : public ofBaseApp{
 
@@ -70,6 +71,11 @@ class ofApp : public ofBaseApp{
     void                            changedLumaKeyThreshold(float &f);
     void                            changedLumaKeySmooth(float &f);
 
+    // GRADIENT
+    ofxPm::GradientEdgesFilter      gradient;
+    ofParameter<float>              guiGradientWidth;
+    void                            changedGradientWidth(float &f);
+    
 #ifdef PM_USE_HEADER_RENDERER
     /// HEADER
     ofxPm::VideoHeader              vHeader;
@@ -82,7 +88,8 @@ class ofApp : public ofBaseApp{
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
-    ofParameter<string>          guiTitle;
+    ofParameter<string>         guiTitleMain;
+    ofParameter<string>         guiTitleMultix;
     ofParameter<vector<float>>  guiMultixValues;
     ofParameter<bool>           guiMultixMinMaxBlend;
     ofParameter<int>            guiBeatMult;
@@ -98,8 +105,9 @@ class ofApp : public ofBaseApp{
 
     bool                        copiesOverflowBuffer;
 
-    ofxPm::VideoRenderer        videoRendererMultix;
+    ofxPm::VideoTrioRenderer        videoRendererMultix;
     ofxPm::MultixFilter                multixFilter;
+    
     
 #endif
     
@@ -107,6 +115,7 @@ class ofApp : public ofBaseApp{
     ofSoundStream               soundStream;
     bool                        drawFullScreen;
     ofMutex                     mutex;
+    void                        setupSecondScreen();
     /// GUI?
     ofParameterGroup*           parametersPlaymodes;
     ofParameter<bool>           guiBufferIsRecording;

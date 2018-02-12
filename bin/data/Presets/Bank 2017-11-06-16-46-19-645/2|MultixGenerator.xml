@@ -10,7 +10,7 @@
 		</MODULE>
 		<MODULE>
 			<name>oscillatorBank 1</name>
-			<pos>660_643_720</pos>
+			<pos>660_600_960</pos>
 		</MODULE>
 		<MODULE>
 			<name>mapper 1</name>
@@ -26,7 +26,7 @@
 		</MODULE>
 		<MODULE>
 			<name>oscillatorBank 2</name>
-			<pos>960_600_720</pos>
+			<pos>960_600_960</pos>
 		</MODULE>
 		<MODULE>
 			<name>mapper 2</name>
@@ -34,11 +34,11 @@
 		</MODULE>
 		<MODULE>
 			<name>PLAYMODES VJYOURSELF 1</name>
-			<pos>329_664_0</pos>
+			<pos>304_582_0</pos>
 		</MODULE>
 	</DYNAMIC_NODES>
 	<phasor_1>
-		<BPM>0.126248</BPM>
+		<BPM>0.120985</BPM>
 		<Beats_Div>0</Beats_Div>
 		<Beats_Mult>0</Beats_Mult>
 		<Quantization>1</Quantization>
@@ -46,13 +46,13 @@
 		<Min_Value>0</Min_Value>
 		<Max_Value>1</Max_Value>
 		<Reset_Phase>0</Reset_Phase>
-		<Loop>0</Loop>
+		<Loop>1</Loop>
 		<Bounce>0</Bounce>
 		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0</Phasor_Monitor>
+		<Phasor_Monitor>0.190527</Phasor_Monitor>
 	</phasor_1>
 	<oscillator_1>
-		<Phasor_In>0</Phasor_In>
+		<Phasor_In>0.190527</Phasor_In>
 		<Phase_Offset>0</Phase_Offset>
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
@@ -65,30 +65,30 @@
 		<Fader>1</Fader>
 		<Invert>0</Invert>
 		<Wave_Select>0</Wave_Select>
-		<Output>0.5</Output>
+		<Output>0.965496</Output>
 	</oscillator_1>
 	<oscillatorBank_1>
-		<Num_Waves>0.00138889</Num_Waves>
+		<Num_Waves>0.00104167</Num_Waves>
 		<Index_Invert>0</Index_Invert>
 		<Symmetry>0</Symmetry>
 		<Index_Random>0</Index_Random>
 		<Index_Offset>0.5</Index_Offset>
-		<Index_Quantization>0.00973574</Index_Quantization>
+		<Index_Quantization>0.0198123</Index_Quantization>
 		<Index_Combination>0</Index_Combination>
 		<Index_Modulo>1</Index_Modulo>
-		<Phasor_In>0</Phasor_In>
+		<Phasor_In>0.965496</Phasor_In>
 		<Phase_Offset>0</Phase_Offset>
 		<Random_Addition>0.5</Random_Addition>
 		<Scale>0.5</Scale>
 		<Offset>0.5</Offset>
-		<Pow>0.522901</Pow>
+		<Pow>0.5</Pow>
 		<Bi_Pow>0.5</Bi_Pow>
 		<Quantization>1</Quantization>
 		<Pulse_Width>1</Pulse_Width>
 		<Skew>0.5</Skew>
 		<Fader>1</Fader>
 		<Invert>0</Invert>
-		<Wave_Select>4</Wave_Select>
+		<Wave_Select>0</Wave_Select>
 	</oscillatorBank_1>
 	<mapper_1>
 		<Input>0</Input>
@@ -99,7 +99,7 @@
 		<Output>0</Output>
 	</mapper_1>
 	<phasor_2>
-		<BPM>0.126248</BPM>
+		<BPM>0.120985</BPM>
 		<Beats_Div>0</Beats_Div>
 		<Beats_Mult>0</Beats_Mult>
 		<Quantization>1</Quantization>
@@ -110,7 +110,7 @@
 		<Loop>1</Loop>
 		<Bounce>0</Bounce>
 		<Offline_Mode>0</Offline_Mode>
-		<Phasor_Monitor>0.419806</Phasor_Monitor>
+		<Phasor_Monitor>0.190527</Phasor_Monitor>
 	</phasor_2>
 	<oscillator_2>
 		<Phasor_In>0</Phasor_In>
@@ -126,10 +126,10 @@
 		<Fader>1</Fader>
 		<Invert>0</Invert>
 		<Wave_Select>0</Wave_Select>
-		<Output>0.5</Output>
+		<Output>0</Output>
 	</oscillator_2>
 	<oscillatorBank_2>
-		<Num_Waves>0.00138889</Num_Waves>
+		<Num_Waves>0.00104167</Num_Waves>
 		<Index_Invert>0</Index_Invert>
 		<Symmetry>0</Symmetry>
 		<Index_Random>0</Index_Random>
@@ -161,29 +161,34 @@
 	</mapper_2>
 	<PLAYMODES_VJYOURSELF_1>
 		<Buffer_Recording>1</Buffer_Recording>
-		<Luma_Key_Threshold>0.0725</Luma_Key_Threshold>
-		<Luma_Key_Smooth>0.3321</Luma_Key_Smooth>
+		<Luma_Key_Threshold>0.1183</Luma_Key_Threshold>
+		<Luma_Key_Smooth>0.0267</Luma_Key_Smooth>
 		<Multix_Blend_MinMax>1</Multix_Blend_MinMax>
 		<Multix_Color_Mode>0.5</Multix_Color_Mode>
-		<Num_Copies>0.00973574</Num_Copies>
-		<Offset_Beat_Div>0.0322581</Offset_Beat_Div>
+		<Num_Copies>0.0198123</Num_Copies>
+		<Offset_Beat_Div>0</Offset_Beat_Div>
 		<Offset_Beat_Mult>0</Offset_Beat_Mult>
 		<Linear_Distribution>0</Linear_Distribution>
 	</PLAYMODES_VJYOURSELF_1>
 	<CONNECTIONS>
 		<CONNECTION>
+			<source>PLAYMODES_VJYOURSELF_1-|-Num_Copies</source>
+			<sink>oscillatorBank_1-|-Index_Quantization</sink>
+			<minmax>0-|-1</minmax>
+		</CONNECTION>
+		<CONNECTION>
 			<source>phasor_1-|-Phasor_Monitor</source>
+			<sink>oscillator_1-|-Phasor_In</sink>
+			<minmax>0-|-1</minmax>
+		</CONNECTION>
+		<CONNECTION>
+			<source>oscillator_1-|-Output</source>
 			<sink>oscillatorBank_1-|-Phasor_In</sink>
 			<minmax>0-|-1</minmax>
 		</CONNECTION>
 		<CONNECTION>
 			<source>oscillatorBank_1-|-Oscillator_Out</source>
 			<sink>PLAYMODES_VJYOURSELF_1-|-Multix_Values_Vect</sink>
-			<minmax>0-|-1</minmax>
-		</CONNECTION>
-		<CONNECTION>
-			<source>PLAYMODES_VJYOURSELF_1-|-Num_Copies</source>
-			<sink>oscillatorBank_1-|-Index_Quantization</sink>
 			<minmax>0-|-1</minmax>
 		</CONNECTION>
 	</CONNECTIONS>

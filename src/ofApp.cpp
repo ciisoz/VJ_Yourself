@@ -88,9 +88,9 @@ void ofApp::setup(){
 
 #ifdef PM_USE_HEADER_RENDERER
     
-    vBuffer.setup(gradient, numCopies,true);
     fx.setup(grabber);
     gradient.setup(fx);
+    vBuffer.setup(gradient, numCopies,true);
 
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(0.0f);

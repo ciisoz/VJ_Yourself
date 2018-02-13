@@ -81,18 +81,17 @@ void ofApp::setup(){
     /// PIPELINE
     ///////////////
     
-//    vBuffer.setup(gradient, numCopies,true);
-//    fx.setup(grabber);
-//    gradient.setup(fx);
 
-    fx.setupNodeBased();
-    gradient.setupNodeBased();
-    vBuffer.setupNodeBased(numCopies,true);
 
     //vRendererGrabber.setup(grabber);
     //vRendererBuffer.setup(vBuffer);
 
 #ifdef PM_USE_HEADER_RENDERER
+    
+    vBuffer.setup(gradient, numCopies,true);
+    fx.setup(grabber);
+    gradient.setup(fx);
+
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(0.0f);
     vRendererHeader.setup(vHeader);
@@ -101,6 +100,10 @@ void ofApp::setup(){
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
+
+    fx.setupNodeBased();
+    gradient.setupNodeBased();
+    vBuffer.setupNodeBased(numCopies,true);
 
     copiesOverflowBuffer=false;
 

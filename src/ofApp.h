@@ -88,7 +88,6 @@ class ofApp : public ofBaseApp{
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
-    ofParameter<string>         guiTitleMain;
     ofParameter<string>         guiTitleMultix;
     ofParameter<vector<float>>  guiMultixValues;
     ofParameter<bool>           guiMultixMinMaxBlend;
@@ -116,6 +115,8 @@ class ofApp : public ofBaseApp{
     bool                        drawFullScreen;
     ofMutex                     mutex;
     void                        setupSecondScreen();
+    ofParameter<string>         guiTitleMain;
+
     /// GUI?
     ofParameterGroup*           parametersPlaymodes;
     ofParameter<bool>           guiBufferIsRecording;

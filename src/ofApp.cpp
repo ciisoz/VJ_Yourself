@@ -81,11 +81,13 @@ void ofApp::setup(){
     /// PIPELINE
     ///////////////
     
-    fx.setup(grabber);
-    gradient.setup(fx);
-    
-//    vBuffer.setupNodeBased(numCopies,true);
-    vBuffer.setup(gradient, numCopies,true);
+//    vBuffer.setup(gradient, numCopies,true);
+//    fx.setup(grabber);
+//    gradient.setup(fx);
+
+    fx.setupNodeBased();
+    gradient.setupNodeBased();
+    vBuffer.setupNodeBased(numCopies,true);
 
     //vRendererGrabber.setup(grabber);
     //vRendererBuffer.setup(vBuffer);
@@ -124,7 +126,7 @@ void ofApp::setup(){
     parametersPlaymodes = new ofParameterGroup();
     parametersPlaymodes->setName("PLAYMODES VJYOURSELF 1");
     
-    // MAIN GUI
+    // MAIN GUI _
     parametersPlaymodes->add(guiTitleMain.set("MAIN_label", " "));
     parametersPlaymodes->add(guiBufferIsRecording.set("Buffer Recording",true));
     // FX GUI

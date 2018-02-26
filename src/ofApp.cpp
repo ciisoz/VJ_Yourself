@@ -3,7 +3,8 @@
 #include "parametersControl.h"
 
 int NUM_PHASORS = 2;
-int numCopies = 240*4;
+// REMEMBER !! to change also the param in VideoBuffer.cpp line 90 :: parameters->add(paramNumHeaders.set("Num Headers",0,0,XXXXX));
+int numCopies = 480;
 int numOscillatorBanks = numCopies;
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -81,35 +82,37 @@ void ofApp::setup(){
     /// PIPELINE
     ///////////////
     
+    videoRendererNode.setup();
 
-
-    //vRendererGrabber.setup(grabber);
-    //vRendererBuffer.setup(vBuffer);
-
+    
 #ifdef PM_USE_HEADER_RENDERER
     
     fx.setup(grabber);
     gradient.setup(fx);
-    vBuffer.setup(gradient, numCopies,true);
+    //vBuffer.setup(gradient, numCopies,true);
 
     vHeader.setup(vBuffer);
     vHeader.setDelayMs(0.0f);
     vRendererHeader.setup(vHeader);
     videoTrioRender.setup(vHeader);
     
+    
 #endif
     
 #ifdef PM_USE_MULTIX_RENDERER
 
+    vBuffer.setupNodeBased(numCopies,true);
+    vBuffer2.setupNodeBased(numCopies,true);
+    
+    multixFilter.setupNodeBased();
+    videoHeaderNode.setupNodeBased();
     fx.setupNodeBased();
     gradient.setupNodeBased();
-    vBuffer.setupNodeBased(numCopies,true);
-
-    copiesOverflowBuffer=false;
-
     
-    multixFilter.setup(vBuffer);
-    multixFilter.setMinmaxBlend(1);
+    copiesOverflowBuffer=false;
+    
+    bool b =true;
+    multixFilter.setMinmaxBlend(b);
     videoRendererMultix.setup(multixFilter);
     
 #endif
@@ -152,18 +155,18 @@ void ofApp::setup(){
     parametersPlaymodes->add(guiTitleMultix.set("MULTIX_label", " "));
     parametersPlaymodes->add(guiMultixMinMaxBlend.set("Multix Blend MinMax",true));
     parametersPlaymodes->add(guiMultixOpacityMode.set("Multix Color Mode",0,0,2));
-    parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,vBuffer.getMaxSize()));
+    parametersPlaymodes->add(guiNumCopies.set("Num Copies",1,1,960));
     parametersPlaymodes->add(guiBeatDiv.set("Offset Beat Div",1,1,32));
     parametersPlaymodes->add(guiBeatMult.set("Offset Beat Mult",1,1,32));
     parametersPlaymodes->add(guiMultixLinearDistribution.set("Linear Distribution",true));
     parametersPlaymodes->add(guiMultixValues.set("Multix Values Vect",guiMultixValues));
 
-    guiNumCopies.addListener(this, &ofApp::changedNumCopies);
-    guiBeatDiv.addListener(this,&ofApp::changedNumCopies);
-    guiBeatMult.addListener(this,&ofApp::changedNumCopies);
-    guiMultixValues.addListener(this, &ofApp::changedMultixValues);
-    guiMultixMinMaxBlend.addListener(this, &ofApp::changedMinMaxBlend);
-    guiMultixOpacityMode.addListener(this,&ofApp::changedMultixOpacityMode);
+//    guiNumCopies.addListener(this, &ofApp::changedNumCopies);
+//    guiBeatDiv.addListener(this,&ofApp::changedNumCopies);
+//    guiBeatMult.addListener(this,&ofApp::changedNumCopies);
+//    guiMultixValues.addListener(this, &ofApp::changedMultixValues);
+//    guiMultixMinMaxBlend.addListener(this, &ofApp::changedMinMaxBlend);
+//    guiMultixOpacityMode.addListener(this,&ofApp::changedMultixOpacityMode);
 
 #endif
     
@@ -219,51 +222,51 @@ void ofApp::changedLumaKeySmooth(float &f)
 //--------------------------------------------------------------
 void ofApp::changedNumCopies(int &_i)
 {
-    float gBPM = parametersControl::getInstance().getGlobalBPM();
-    float BPMfactor = (float(guiBeatMult)/float(guiBeatDiv));
-    float oneBeatMs = (60.0/gBPM)*1000;
-    float oneCopyMs = oneBeatMs / BPMfactor;
-    
-    vector<float> vf;
-    multixFilter.setNumHeaders(numCopies);
-    
-    for(int i=0;i<guiNumCopies;i++)
-    {
-        if(guiMultixLinearDistribution)
-        {
-            // in linear distribution, the copies are spaced equally a time/distance defined by BPM and beatMult/Div
-            vf.push_back(i*oneCopyMs);
-        }
-        else
-        {
-            // non-linear distribution, the copies are distributed from 0 to the time expressed by BPM/Mult/Div.
-            // And inside this period the copies are distributed by Generator
-            // TO DO
-            float outMin,outMax;
-            int oscillatorReIndex = int(ofMap(i,0,float(guiNumCopies),0,float(numOscillatorBanks)));
-            mutex.lock();
-            {
-                vf.push_back(ofMap(guiMultixValues.get()[oscillatorReIndex],0.0,1.0, 0.0, oneCopyMs));
-            }
-            mutex.unlock();
-//            cout << "app : " << oscillatorReIndex << " // guiMultiValue : " << guiMultixValues.get()[oscillatorReIndex] << endl;
-        }
-    }
-    multixFilter.updateValuesMs(vf);
-    
-    // Calculating "Overflow" it happens when we're trying to fetch a video frame that is out of bounds in the buffer
-    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
-    float timeInBuffer = vBuffer.getMaxSize()*oneFrameMs;
-    float timeInCopies = oneCopyMs*guiNumCopies;
-    if(timeInCopies > timeInBuffer)
-    {
-        cout << "OVERFLOOOOW!! OneCopyMs : " << oneCopyMs << " // guiNumCopies : " << guiNumCopies << " = " << timeInCopies << " //  > " << timeInBuffer << " // buffer Size : " << vBuffer.getMaxSize() << endl;
-        copiesOverflowBuffer = true;
-    }
-    else
-    {
-        copiesOverflowBuffer = false;
-    }
+//    float gBPM = parametersControl::getInstance().getGlobalBPM();
+//    float BPMfactor = (float(guiBeatMult)/float(guiBeatDiv));
+//    float oneBeatMs = (60.0/gBPM)*1000;
+//    float oneCopyMs = oneBeatMs / BPMfactor;
+//    
+//    vector<float> vf;
+//    multixFilter.setNumHeaders(guiNumCopies);
+//    
+//    for(int i=0;i<guiNumCopies;i++)
+//    {
+//        if(guiMultixLinearDistribution)
+//        {
+//            // in linear distribution, the copies are spaced equally a time/distance defined by BPM and beatMult/Div
+//            vf.push_back(i*oneCopyMs);
+//        }
+//        else
+//        {
+//            // non-linear distribution, the copies are distributed from 0 to the time expressed by BPM/Mult/Div.
+//            // And inside this period the copies are distributed by Generator
+//            // TO DO
+//            float outMin,outMax;
+//            int oscillatorReIndex = int(ofMap(i,0,float(guiNumCopies),0,float(numOscillatorBanks)));
+//            mutex.lock();
+//            {
+//                vf.push_back(ofMap(guiMultixValues.get()[oscillatorReIndex],0.0,1.0, 0.0, oneCopyMs));
+//            }
+//            mutex.unlock();
+////            cout << "app : " << oscillatorReIndex << " // guiMultiValue : " << guiMultixValues.get()[oscillatorReIndex] << endl;
+//        }
+//    }
+//    multixFilter.updateValuesMs(vf);
+//    
+//    // Calculating "Overflow" it happens when we're trying to fetch a video frame that is out of bounds in the buffer
+//    float oneFrameMs = (1.0 / grabFPS) * 1000.0;
+//    float timeInBuffer = vBuffer.getMaxSize()*oneFrameMs;
+//    float timeInCopies = oneCopyMs*guiNumCopies;
+//    if(timeInCopies > timeInBuffer)
+//    {
+//        cout << "OVERFLOOOOW!! OneCopyMs : " << oneCopyMs << " // guiNumCopies : " << guiNumCopies << " = " << timeInCopies << " //  > " << timeInBuffer << " // buffer Size : " << vBuffer.getMaxSize() << endl;
+//        copiesOverflowBuffer = true;
+//    }
+//    else
+//    {
+//        copiesOverflowBuffer = false;
+//    }
 }
 
 //--------------------------------------------------------------
@@ -316,7 +319,6 @@ void ofApp::update()
 void ofApp::draw()
 {
     
-    
 #ifdef PM_USE_MULTIX_RENDERER
     if(copiesOverflowBuffer)
     {
@@ -330,6 +332,10 @@ void ofApp::draw()
     ofSetColor(0);
     ofDrawRectangle(0,0,grabberResolution.x, grabberResolution.y+20);
     
+    
+    ofSetColor(255);
+    videoRendererNode.draw(0,0,640,480);
+
     //vRendererGrabber.draw(10,10,160,120);
     //vRendererHeader.draw(10+140+10,10,160,120);
     
@@ -439,6 +445,15 @@ void ofApp::keyPressed(int key)
         PS3_autoWB=!PS3_autoWB;
         grabber.setAutoWhiteBalance(PS3_autoWB);
     }
+    else if(key=='h')
+    {
+        vector<float> v;
+        for(int i=0;i<10;i++)
+        {
+            v.push_back(50*i);
+        }
+        multixFilter.updateValuesMs(v);
+    }
 //    else if(key=='e')
 //    {
 //        PS3_exposure = PS3_exposure + 5;
@@ -547,48 +562,26 @@ void ofApp::audioRateTrigger(int bufferSize)
 //------------------------------------------------------
 void ofApp::drawProgramWindow(ofEventArgs & args)
 {
-//    if(ofGetElapsedTimef()<2.0f)
-//    {
-//       return;
-//    }
-
-//    // transformation for flipping ...
+//        
+//#ifdef PM_USE_MULTIX_RENDERER
 //    ofSetColor(255);
-//    ofPushMatrix();
-//    ofVec2f moveToRotate = ofVec2f(ofGetWindowWidth(),ofGetWindowHeight());
-//    ofTranslate(moveToRotate.x/2.0,moveToRotate.y/2.0);
-//    ofRotate(180,0.0,1.0,0.0);
-//    ofTranslate(-moveToRotate.x/2.0,-moveToRotate.y/2.0);
+//    ofSetColor(255);
+//    ofxPm::VideoFrame vB = (ofxPm::VideoFrame) vBuffer.getVideoFrame(float(1.0));
+//    if(!vB.isNull())
+//    {
+//        if(vB.getTextureRef().isAllocated()) vB.getTextureRef().draw(0,0,640,480);
+//    }
+//    //videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+//    ofSetColor(255,0,0);
+//    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 20);
+//    ofSetColor(255);
+//#endif
+//#ifdef PM_USE_HEADER_RENDERER
+//        ofSetColor(255);
+//    vRendererHeader.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
+//#endif
 //
 //    
-
-    
-    
-#ifdef PM_USE_MULTIX_RENDERER
-    ofSetColor(255);
-//    //videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
-////    videoRendererMultix.draw(0,0,160,120);
-//    ofTexture t = videoRendererMultix.getLastFrameTexture();
-//    if(!t.isAllocated())
-//    {
-//        t.allocate(grabberResolution.x, grabberResolution.y, GL_RGBA);
-//        cout << "ofApp::Drawing Program windows allocating texture!!" << endl;
-//    }
-//    t.getTextureData().bFlipTextureHoriz = true;
-//    t.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
-    ofSetColor(255);
-    //vBuffer.draw();
-    videoRendererMultix.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
-    ofSetColor(255,0,0);
-    ofDrawCircle(ofGetMouseX(), ofGetMouseY(), 20);
-    ofSetColor(255);
-#endif
-#ifdef PM_USE_HEADER_RENDERER
-        ofSetColor(255);
-    vRendererHeader.draw(0,0,ofGetWindowWidth(),ofGetWindowHeight());
-#endif
-
-    
 
 }
 

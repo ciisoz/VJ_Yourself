@@ -10,9 +10,9 @@ int main( ){
 //	// pass in width and height too:
 //	ofRunApp(new ofApp());
 
-  /*
+  
     ofGLWindowSettings settings;
-    settings.width = 1280;
+    settings.width = 1600;
     settings.height = 1024;
     settings.setGLVersion(4,1);
     ofCreateWindow(settings);
@@ -22,14 +22,14 @@ int main( ){
     // pass in width and height too:
     ofRunApp(new ofApp());
     
-*/
+/*
     
 
 
     ofGLFWWindowSettings settings;
 
     // MAIN WINDOW
-    settings.width = 1280;
+    settings.width = 1600;
     settings.height = 1024;
     settings.setPosition(ofVec2f(320,0));
     settings.setGLVersion(4,1);
@@ -58,7 +58,7 @@ int main( ){
     ofRunMainLoop();
  
  
-     
+     */
 
 
 

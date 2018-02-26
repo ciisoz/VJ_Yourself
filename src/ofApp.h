@@ -63,6 +63,7 @@ class ofApp : public ofBaseApp{
     
     /// BUFFER
     ofxPm::VideoBuffer              vBuffer;
+    ofxPm::VideoBuffer              vBuffer2;
 
     // FX LUMA
     ofxPm::VideoTestShaderFX        fx;
@@ -75,6 +76,8 @@ class ofApp : public ofBaseApp{
     ofxPm::GradientEdgesFilter      gradient;
     ofParameter<float>              guiGradientWidth;
     void                            changedGradientWidth(float &f);
+    
+    ofxPm::VideoRendererNodeBased   videoRendererNode;
     
 #ifdef PM_USE_HEADER_RENDERER
     /// HEADER
@@ -105,7 +108,8 @@ class ofApp : public ofBaseApp{
     bool                        copiesOverflowBuffer;
 
     ofxPm::VideoTrioRenderer        videoRendererMultix;
-    ofxPm::MultixFilter                multixFilter;
+    ofxPm::MultixFilter             multixFilter;
+    ofxPm::VideoHeaderNodeBased     videoHeaderNode;
     
     
 #endif
@@ -113,7 +117,7 @@ class ofApp : public ofBaseApp{
     /// GENERAL
     ofSoundStream               soundStream;
     bool                        drawFullScreen;
-    ofMutex                     mutex;
+    
     void                        setupSecondScreen();
     ofParameter<string>         guiTitleMain;
 

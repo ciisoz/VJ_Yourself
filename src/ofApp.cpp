@@ -192,7 +192,6 @@ void ofApp::changedBufferIsRecording(bool &b)
         vBuffer.stop();
     }
     
-    videoGrabberNode.update();
     
 }
 
@@ -338,7 +337,11 @@ void ofApp::draw()
     
     
     ofSetColor(255);
-    videoRendererNode.draw(0,0,640,480);
+//    if(videoRendererNode.getLastFrameTexture().isAllocated())
+//    {
+        videoRendererNode.draw(0,0);
+//        
+//    }
 
     //vRendererGrabber.draw(10,10,160,120);
     //vRendererHeader.draw(10+140+10,10,160,120);
@@ -392,7 +395,7 @@ void ofApp::draw()
     else if(actualFPS>=30) ofSetColor(255,128,0);
     else ofSetColor(255,0,0);
     
-    ofDrawBitmapString(int(actualFPS), grabberResolution.x-20, grabberResolution.y+15);
+    ofDrawBitmapString(int(actualFPS), 10, 15);
     
 //    ofSetColor(255);
 //    ofDrawBitmapString("Frame[0] Timestamp : " + ofToString(vBuffer.getFirstFrameTimestamp().raw()),ofGetWidth()-350,50);

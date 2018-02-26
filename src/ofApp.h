@@ -78,6 +78,7 @@ class ofApp : public ofBaseApp{
     void                            changedGradientWidth(float &f);
     
     ofxPm::VideoRendererNodeBased   videoRendererNode;
+    ofxPm::VideoGrabberNodeBased    videoGrabberNode;
     
 #ifdef PM_USE_HEADER_RENDERER
     /// HEADER

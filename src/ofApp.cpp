@@ -75,6 +75,9 @@ void ofApp::setup(){
     grabber.setDeviceID(0);
     grabber.initGrabber(grabberResolution.x,grabberResolution.y);
 
+    // NODE BASED ONE
+    videoGrabberNode.initGrabber(grabberResolution.x, grabberResolution.y);
+
 #ifdef PM_USE_PS3EYE
     //grabber.setExposure(static_cast<uint8_t>( PS3_exposure));
 #endif
@@ -189,6 +192,7 @@ void ofApp::changedBufferIsRecording(bool &b)
         vBuffer.stop();
     }
     
+    videoGrabberNode.update();
     
 }
 
@@ -307,7 +311,7 @@ void ofApp::changedHeaderDelay(float &f)
 void ofApp::update()
 {
     grabber.update();
- 
+    videoGrabberNode.update();
 //    phasor->getParameterGroup()->getFloat("Phasor Monitor");
     for(int i=0;i<NUM_PHASORS;i++)
     {
